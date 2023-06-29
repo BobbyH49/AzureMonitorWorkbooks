@@ -1,0 +1,524 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# ADF Pipeline Costing Report"
+      },
+      "name": "text - Header"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Select Azure Data Factory"
+      },
+      "name": "text - Azure Data Factory"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all"
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "ResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.datafactory/factories\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "DataFactory",
+            "label": "Data Factory",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.datafactory/factories\"\r\n| where resourceGroup in ({ResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - Azure Data Factory"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Select Log Analytics Workspace (used for collecting Diagnostic Settings)"
+      },
+      "name": "text - Log Analytics"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{SubscriptionLA}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "SubscriptionLA",
+            "label": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all"
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "ResourceGroupLA",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.operationalinsights/workspaces\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{SubscriptionLA}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogAnalytics",
+            "label": "Log Analytics Workspace",
+            "type": 5,
+            "isRequired": true,
+            "query": "resources\r\n| where tolower(type) == \"microsoft.operationalinsights/workspaces\"\r\n| where resourceGroup in ({ResourceGroupLA})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{SubscriptionLA}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": "/subscriptions/9204f233-abf1-4491-ad9a-fffb219edbfa/resourceGroups/ADFLabDevRG/providers/Microsoft.OperationalInsights/workspaces/devrh1976loganalytics"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - Log Analytics"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Enter Azure Data Factory Rates (can be found using the Azure Pricing Calculator https://azure.microsoft.com/pricing/calculator/)"
+      },
+      "conditionalVisibility": {
+        "parameterName": "LogAnalytics",
+        "comparison": "isNotEqualTo"
+      },
+      "name": "text - Azure Data Factory"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "2d6f33ef-d1ec-480e-a6d8-3d198f572eaf",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "label": "Time Range",
+            "type": 4,
+            "isRequired": true,
+            "value": {
+              "durationMs": 3600000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                },
+                {
+                  "durationMs": 5184000000
+                },
+                {
+                  "durationMs": 7776000000
+                }
+              ]
+            }
+          },
+          {
+            "id": "7e88d1c2-4d4d-451f-bf83-003c470008bc",
+            "version": "KqlParameterItem/1.0",
+            "name": "AzureIRActivityCost",
+            "label": "Azure IR Activity Cost",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.84"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "AzureIR",
+            "label": "Azure IR Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.21",
+            "id": "49bab3b7-5b7d-4d88-a17d-14877324dbae"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "AzureIRPipeline",
+            "label": "Azure IR Pipeline Activity Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.004",
+            "id": "91e5e0de-9c45-40ee-93bb-98d3391e2ab5"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "AzureIRExternal",
+            "label": "Azure IR External Activity Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.00021",
+            "id": "32d007c6-73d4-4502-9c77-c1f140ae24af"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "SelfHostedIRActivityCost",
+            "label": "Self Hosted IR Activity Cost",
+            "type": 1,
+            "isRequired": true,
+            "value": "1.26",
+            "id": "04a86dd3-0146-4af8-9812-b8363a034092"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "SelfHostedIR",
+            "label": "Self Hosted IR Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.08",
+            "id": "28b9aba0-2eb5-4c79-b876-24ea351fb70d"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "SelfHostedIRPipeline",
+            "label": "Self Hosted IR Pipeline Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.002",
+            "id": "591342a2-1ccc-48f9-9b61-b662d4d1037c"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "SelfHostedIRExternal",
+            "label": "Self Hosted IR External Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.0001",
+            "id": "8f97f5af-c27b-4dfd-a3fe-4bfde9481b5e"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "VNetAzureIRActivityCost",
+            "label": "VNet Azure IR Activity Cost",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.84",
+            "id": "c7cb8efc-02da-4bc9-91de-d8b53780eb59"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "VNetAzureIR",
+            "label": "VNet Azure IR Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.21",
+            "id": "507961cd-6f11-46f7-8b12-7c8ede0313ae"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "VNetAzureIRPipeline",
+            "label": "VNet Azure IR Pipeline Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.838",
+            "id": "eb876832-d8fc-48b1-8495-3d111a7586f0"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "VNetAzureIRExternal",
+            "label": "VNet Azure IR External Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "0.8375",
+            "id": "8be776c9-3e7b-40a6-bc34-2df763c2de6c"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "GeneralDataFlow",
+            "label": "General Purpose Data Flow Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "1.93",
+            "id": "0fa4c32a-c001-406f-b35e-5093e7c4a833"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "MemoryDataFlow",
+            "label": "Memory Optimized Data Flow Hourly Rate",
+            "type": 1,
+            "isRequired": true,
+            "value": "2.46",
+            "id": "c5197217-8f13-4ed2-8971-feaabbf84471"
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "conditionalVisibility": {
+        "parameterName": "LogAnalytics",
+        "comparison": "isNotEqualTo"
+      },
+      "name": "parameters - Azure Data Factory"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let AzureIRActivityCost = {AzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet AzureIR = {AzureIR}; // cost per hour for Azure Integration Runtime\r\nlet AzureIRPipeline = {AzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet AzureIRExternal = {AzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet SelfHostedIRActivityCost = {SelfHostedIRActivityCost}; // cost per 1000 Activity Runs\r\nlet SelfHostedIR = {SelfHostedIR}; // cost per hour for Self Hosted Integration Runtime\r\nlet SelfHostedIRPipeline = {SelfHostedIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet SelfHostedIRExternal = {SelfHostedIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet VNetAzureIRActivityCost = {VNetAzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet VNetAzureIR = {VNetAzureIR}; // cost per hour for Azure VNet Managed Integration Runtime\r\nlet VNetAzureIRPipeline = {VNetAzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet VNetAzureIRExternal = {VNetAzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet GeneralDataFlow = {GeneralDataFlow}; // cost per hour for 8 vCores General Purpose\r\nlet MemoryDataFlow = {MemoryDataFlow}; // cost per hour for 8 vCores Memory Optimized\r\nADFActivityRun\r\n| where Status == \"Succeeded\" or Status == \"Failed\"\r\n| where _ResourceId in~({DataFactory})\r\n| where Start {TimeRange}\r\n| extend Resource = extract(\".+/FACTORIES/(.+)\", 1, ResourceId).tolower()\r\n| project Resource, PipelineName, ActivityName, Start, End, OutputJson = parse_json(Output)\r\n| project Resource, PipelineName, ActivityName, Start, End, activityType = OutputJson.billingReference.activityType, billableDuration = OutputJson.billingReference.billableDuration[0], executionDetails = OutputJson.executionDetails[0]\r\n| project Resource, PipelineName, ActivityName, Start, End, activityType, billableDuration = billableDuration.duration, billableType = billableDuration.meterType, billableUnits = billableDuration.unit, diuCount = executionDetails.usedDataIntegrationUnits, durationSeconds = executionDetails.duration, billableSeconds = ceiling(todecimal(executionDetails.duration) / 60) * 60\r\n| summarize activityCount = count(), billableDuration = sum(todecimal(billableDuration)), durationSeconds = sum(toint(durationSeconds)), billableSeconds = sum(toint(billableSeconds)) by Resource, PipelineName, ActivityName, tostring(activityType), tostring(billableType)\r\n| project Resource, PipelineName, ActivityName, activityType, billableType, activityCount\r\n    , activityCost = todecimal(activityCount) / 1000 *\r\n        case(\r\n            billableType == \"AzureIR\", AzureIRActivityCost\r\n            , billableType == \"SelfhostedIR\", SelfHostedIRActivityCost\r\n            , billableType == \"ManagedVNetIR\", VNetAzureIRActivityCost\r\n            , billableType == \"General\", AzureIRActivityCost\r\n            , billableType == \"MemoryOptimized\", AzureIRActivityCost\r\n            , 0.0\r\n        )\r\n    , billableDuration\r\n    , activityDurationCost = billableDuration *\r\n        case(\r\n            billableType == \"AzureIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", AzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", AzureIRExternal\r\n                    , AzureIR\r\n                )\r\n            , billableType == \"SelfhostedIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", SelfHostedIRPipeline\r\n                    , activityType == \"ExternalActivity\", SelfHostedIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"ManagedVNetIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", VNetAzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", VNetAzureIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"General\", GeneralDataFlow\r\n            , billableType == \"MemoryOptimized\", MemoryDataFlow\r\n            , 0.0\r\n        )\r\n| summarize TotalCost = round(sum(activityCost) + sum(activityDurationCost), 2) by Resource\r\n| render piechart\r\n",
+        "size": 0,
+        "title": "Cost by Data Factory",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "LogAnalytics",
+        "comparison": "isNotEqualTo"
+      },
+      "customWidth": "50",
+      "name": "query - Cost Chart by Data Factory"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let AzureIRActivityCost = {AzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet AzureIR = {AzureIR}; // cost per hour for Azure Integration Runtime\r\nlet AzureIRPipeline = {AzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet AzureIRExternal = {AzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet SelfHostedIRActivityCost = {SelfHostedIRActivityCost}; // cost per 1000 Activity Runs\r\nlet SelfHostedIR = {SelfHostedIR}; // cost per hour for Self Hosted Integration Runtime\r\nlet SelfHostedIRPipeline = {SelfHostedIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet SelfHostedIRExternal = {SelfHostedIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet VNetAzureIRActivityCost = {VNetAzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet VNetAzureIR = {VNetAzureIR}; // cost per hour for Azure VNet Managed Integration Runtime\r\nlet VNetAzureIRPipeline = {VNetAzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet VNetAzureIRExternal = {VNetAzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet GeneralDataFlow = {GeneralDataFlow}; // cost per hour for 8 vCores General Purpose\r\nlet MemoryDataFlow = {MemoryDataFlow}; // cost per hour for 8 vCores Memory Optimized\r\nADFActivityRun\r\n| where Status == \"Succeeded\" or Status == \"Failed\"\r\n| where Start {TimeRange}\r\n| where _ResourceId in~({DataFactory})\r\n| extend Resource = extract(\".+/FACTORIES/(.+)\", 1, ResourceId).tolower()\r\n| project Resource, PipelineName, ActivityName, Start, End, OutputJson = parse_json(Output)\r\n| project Resource, PipelineName, ActivityName, Start, End, activityType = OutputJson.billingReference.activityType, billableDuration = OutputJson.billingReference.billableDuration[0], executionDetails = OutputJson.executionDetails[0]\r\n| project Resource, PipelineName, ActivityName, Start, End, activityType, billableDuration = billableDuration.duration, billableType = billableDuration.meterType, billableUnits = billableDuration.unit, diuCount = executionDetails.usedDataIntegrationUnits, durationSeconds = executionDetails.duration, billableSeconds = ceiling(todecimal(executionDetails.duration) / 60) * 60\r\n| summarize activityCount = count(), billableDuration = sum(todecimal(billableDuration)), durationSeconds = sum(toint(durationSeconds)), billableSeconds = sum(toint(billableSeconds)) by Resource, PipelineName, ActivityName, tostring(activityType), tostring(billableType)\r\n| project Resource, PipelineName, ActivityName, activityType, billableType, activityCount\r\n    , activityCost = todecimal(activityCount) / 1000 *\r\n        case(\r\n            billableType == \"AzureIR\", AzureIRActivityCost\r\n            , billableType == \"SelfhostedIR\", SelfHostedIRActivityCost\r\n            , billableType == \"ManagedVNetIR\", VNetAzureIRActivityCost\r\n            , billableType == \"General\", AzureIRActivityCost\r\n            , billableType == \"MemoryOptimized\", AzureIRActivityCost\r\n            , 0.0\r\n        )\r\n    , billableDuration\r\n    , activityDurationCost = billableDuration *\r\n        case(\r\n            billableType == \"AzureIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", AzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", AzureIRExternal\r\n                    , AzureIR\r\n                )\r\n            , billableType == \"SelfhostedIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", SelfHostedIRPipeline\r\n                    , activityType == \"ExternalActivity\", SelfHostedIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"ManagedVNetIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", VNetAzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", VNetAzureIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"General\", GeneralDataFlow\r\n            , billableType == \"MemoryOptimized\", MemoryDataFlow\r\n            , 0.0\r\n        )\r\n| summarize TotalCost = round(sum(activityCost) + sum(activityDurationCost), 2) by Resource, PipelineName\r\n| project TotalCost, DataFactoryPipeline = strcat(Resource, \"/\", PipelineName)\r\n| render piechart\r\n",
+        "size": 0,
+        "title": "Cost by Pipeline",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "LogAnalytics",
+        "comparison": "isNotEqualTo"
+      },
+      "customWidth": "50",
+      "name": "query - Cost Chart by Pipeline"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click a pipeline to view the activity details"
+      },
+      "conditionalVisibility": {
+        "parameterName": "LogAnalytics",
+        "comparison": "isNotEqualTo"
+      },
+      "name": "text - Pipeline Details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let AzureIRActivityCost = {AzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet AzureIR = {AzureIR}; // cost per hour for Azure Integration Runtime\r\nlet AzureIRPipeline = {AzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet AzureIRExternal = {AzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet SelfHostedIRActivityCost = {SelfHostedIRActivityCost}; // cost per 1000 Activity Runs\r\nlet SelfHostedIR = {SelfHostedIR}; // cost per hour for Self Hosted Integration Runtime\r\nlet SelfHostedIRPipeline = {SelfHostedIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet SelfHostedIRExternal = {SelfHostedIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet VNetAzureIRActivityCost = {VNetAzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet VNetAzureIR = {VNetAzureIR}; // cost per hour for Azure VNet Managed Integration Runtime\r\nlet VNetAzureIRPipeline = {VNetAzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet VNetAzureIRExternal = {VNetAzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet GeneralDataFlow = {GeneralDataFlow}; // cost per hour for 8 vCores General Purpose\r\nlet MemoryDataFlow = {MemoryDataFlow}; // cost per hour for 8 vCores Memory Optimized\r\nADFActivityRun\r\n| where Status == \"Succeeded\" or Status == \"Failed\"\r\n| where _ResourceId in~({DataFactory})\r\n| where Start {TimeRange}\r\n| project ResourceId, PipelineName, PipelineRunId, ActivityName, Start, End, OutputJson = parse_json(Output)\r\n| project ResourceId, PipelineName, PipelineRunId, ActivityName, Start, End, activityType = OutputJson.billingReference.activityType, billableDuration = OutputJson.billingReference.billableDuration[0], executionDetails = OutputJson.executionDetails[0]\r\n| project ResourceId, PipelineName, PipelineRunId, ActivityName, Start, End, activityType, billableDuration = billableDuration.duration, billableType = billableDuration.meterType, billableUnits = billableDuration.unit, diuCount = executionDetails.usedDataIntegrationUnits, durationSeconds = executionDetails.duration, billableSeconds = ceiling(todecimal(executionDetails.duration) / 60) * 60\r\n| summarize PipelineCount = count_distinct(PipelineRunId), activityCount = count(), billableDuration = sum(todecimal(billableDuration)), durationSeconds = sum(toint(durationSeconds)), billableSeconds = sum(toint(billableSeconds)) by ResourceId, PipelineName, ActivityName, tostring(activityType), tostring(billableType)\r\n| project ResourceId, PipelineName, PipelineCount, ActivityName, ActivityType = activityType, ActivityCount = activityCount\r\n    , ActivityCost = round(todecimal(activityCount) / 1000 *\r\n        case(\r\n            billableType == \"AzureIR\", AzureIRActivityCost\r\n            , billableType == \"SelfhostedIR\", SelfHostedIRActivityCost\r\n            , billableType == \"ManagedVNetIR\", VNetAzureIRActivityCost\r\n            , billableType == \"General\", AzureIRActivityCost\r\n            , billableType == \"MemoryOptimized\", AzureIRActivityCost\r\n            , 0.0\r\n        ), 5)\r\n    , BillableType = billableType\r\n    , BillableDuration = round(billableDuration, 5)\r\n    , DurationCost = round(billableDuration *\r\n        case(\r\n            billableType == \"AzureIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", AzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", AzureIRExternal\r\n                    , AzureIR\r\n                )\r\n            , billableType == \"SelfhostedIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", SelfHostedIRPipeline\r\n                    , activityType == \"ExternalActivity\", SelfHostedIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"ManagedVNetIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", VNetAzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", VNetAzureIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"General\", GeneralDataFlow\r\n            , billableType == \"MemoryOptimized\", MemoryDataFlow\r\n            , 0.0\r\n        ), 5)\r\n| summarize ActivityCount = sum(ActivityCount), ActivityCost = sum(ActivityCost), BillableDuration = sum(BillableDuration), DurationCost = sum(DurationCost), TotalCost = round(sum(ActivityCost) + sum(DurationCost), 5) by ResourceId, PipelineName, PipelineCount\r\n\r\n",
+        "size": 1,
+        "title": "Pipeline Cost Details",
+        "exportedParameters": [
+          {
+            "fieldName": "ResourceId",
+            "parameterName": "ResourceId"
+          },
+          {
+            "fieldName": "PipelineName",
+            "parameterName": "PipelineName",
+            "parameterType": 1
+          }
+        ],
+        "showExportToExcel": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ],
+        "sortBy": []
+      },
+      "conditionalVisibility": {
+        "parameterName": "LogAnalytics",
+        "comparison": "isNotEqualTo"
+      },
+      "name": "query - Pipeline Details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let AzureIRActivityCost = {AzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet AzureIR = {AzureIR}; // cost per hour for Azure Integration Runtime\r\nlet AzureIRPipeline = {AzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet AzureIRExternal = {AzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet SelfHostedIRActivityCost = {SelfHostedIRActivityCost}; // cost per 1000 Activity Runs\r\nlet SelfHostedIR = {SelfHostedIR}; // cost per hour for Self Hosted Integration Runtime\r\nlet SelfHostedIRPipeline = {SelfHostedIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet SelfHostedIRExternal = {SelfHostedIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet VNetAzureIRActivityCost = {VNetAzureIRActivityCost}; // cost per 1000 Activity Runs\r\nlet VNetAzureIR = {VNetAzureIR}; // cost per hour for Azure VNet Managed Integration Runtime\r\nlet VNetAzureIRPipeline = {VNetAzureIRPipeline}; // cost per hour for Pipeline Activities (e.g. lookup, get metadata)\r\nlet VNetAzureIRExternal = {VNetAzureIRExternal}; // cost per hour External Activities (e.g Azure Databricks)\r\nlet GeneralDataFlow = {GeneralDataFlow}; // cost per hour for 8 vCores General Purpose\r\nlet MemoryDataFlow = {MemoryDataFlow}; // cost per hour for 8 vCores Memory Optimized\r\nADFActivityRun\r\n| where Status == \"Succeeded\" or Status == \"Failed\"\r\n| where ResourceId == \"{ResourceId}\"\r\n| where PipelineName == \"{PipelineName}\"\r\n| where Start {TimeRange}\r\n| project ResourceId, PipelineName, PipelineRunId, ActivityName, Start, End, OutputJson = parse_json(Output)\r\n| project ResourceId, PipelineName, PipelineRunId, ActivityName, Start, End, activityType = OutputJson.billingReference.activityType, billableDuration = OutputJson.billingReference.billableDuration[0], executionDetails = OutputJson.executionDetails[0]\r\n| project ResourceId, PipelineName, PipelineRunId, ActivityName, Start, End, activityType, billableDuration = billableDuration.duration, billableType = billableDuration.meterType, billableUnits = billableDuration.unit, diuCount = executionDetails.usedDataIntegrationUnits, durationSeconds = executionDetails.duration, billableSeconds = ceiling(todecimal(executionDetails.duration) / 60) * 60\r\n| summarize PipelineCount = count_distinct(PipelineRunId), activityCount = count(), billableDuration = sum(todecimal(billableDuration)), durationSeconds = sum(toint(durationSeconds)), billableSeconds = sum(toint(billableSeconds)) by ResourceId, PipelineName, ActivityName, tostring(activityType), tostring(billableType)\r\n| project ResourceId, PipelineName, PipelineCount, ActivityName, ActivityType = activityType, ActivityCount = activityCount\r\n    , ActivityCost = round(todecimal(activityCount) / 1000 *\r\n        case(\r\n            billableType == \"AzureIR\", AzureIRActivityCost\r\n            , billableType == \"SelfhostedIR\", SelfHostedIRActivityCost\r\n            , billableType == \"ManagedVNetIR\", VNetAzureIRActivityCost\r\n            , billableType == \"General\", AzureIRActivityCost\r\n            , billableType == \"MemoryOptimized\", AzureIRActivityCost\r\n            , 0.0\r\n        ), 5)\r\n    , BillableType = billableType\r\n    , BillableDuration = round(billableDuration, 5)\r\n    , DurationCost = round(billableDuration *\r\n        case(\r\n            billableType == \"AzureIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", AzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", AzureIRExternal\r\n                    , AzureIR\r\n                )\r\n            , billableType == \"SelfhostedIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", SelfHostedIRPipeline\r\n                    , activityType == \"ExternalActivity\", SelfHostedIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"ManagedVNetIR\",\r\n                case(\r\n                    activityType == \"PipelineActivity\", VNetAzureIRPipeline\r\n                    , activityType == \"ExternalActivity\", VNetAzureIRExternal\r\n                    , SelfHostedIR\r\n                )\r\n            , billableType == \"General\", GeneralDataFlow\r\n            , billableType == \"MemoryOptimized\", MemoryDataFlow\r\n            , 0.0\r\n        ), 5)\r\n",
+        "size": 1,
+        "title": "Activity Cost Details",
+        "showExportToExcel": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ],
+        "sortBy": []
+      },
+      "conditionalVisibility": {
+        "parameterName": "ResourceId",
+        "comparison": "isNotEqualTo"
+      },
+      "name": "query - Activity Details"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
