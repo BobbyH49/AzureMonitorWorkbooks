@@ -4,7 +4,7 @@
     {
       "type": 1,
       "content": {
-        "json": "# Azure SQL Database Performance Monitor\r\n## Not including databases deployed to Elastic Pool"
+        "json": "# Azure SQL Database Elastic Pool Performance Monitor"
       },
       "name": "text - Header"
     },
@@ -12,6 +12,9 @@
       "type": 9,
       "content": {
         "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
         "parameters": [
           {
             "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
@@ -43,7 +46,7 @@
             "multiSelect": true,
             "quote": "'",
             "delimiter": ",",
-            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.sql/servers/databases\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.sql/servers/elasticpools\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
             "crossComponentResources": [
               "{Subscription}"
             ],
@@ -58,22 +61,19 @@
             },
             "defaultValue": "value::all",
             "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources",
-            "value": [
-              "value::all"
-            ]
+            "resourceType": "microsoft.resourcegraph/resources"
           },
           {
             "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
             "version": "KqlParameterItem/1.0",
-            "name": "SqlDatabase",
-            "label": "SQL Database",
+            "name": "SqlElasticPool",
+            "label": "SQL Elastic Pool",
             "type": 5,
             "isRequired": true,
             "multiSelect": true,
             "quote": "'",
             "delimiter": ",",
-            "query": "resources\r\n| where tolower(type) == \"microsoft.sql/servers/databases\"\r\n| where resourceGroup in ({ResourceGroup})\r\n| where name != 'master'\r\n| where kind !contains \"pool\"\r\n| project AffectedResource=id, resourceGroup",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.sql/servers/elasticpools\"\r\n| where resourceGroup in ({ResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
             "crossComponentResources": [
               "{Subscription}"
             ],
@@ -88,10 +88,7 @@
             },
             "defaultValue": "value::all",
             "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources",
-            "value": [
-              "value::all"
-            ]
+            "resourceType": "microsoft.resourcegraph/resources"
           },
           {
             "id": "2d6f33ef-d1ec-480e-a6d8-3d198f572eaf",
@@ -155,10 +152,10 @@
           }
         ],
         "style": "pills",
-        "queryType": 0,
+        "queryType": 1,
         "resourceType": "microsoft.resourcegraph/resources"
       },
-      "name": "parameters - Sql Database"
+      "name": "parameters - Sql Elastic Pool"
     },
     {
       "type": 10,
@@ -167,11 +164,11 @@
         "version": "MetricsItem/2.0",
         "size": 0,
         "chartType": 2,
-        "resourceType": "microsoft.sql/servers/databases",
+        "resourceType": "microsoft.sql/servers/elasticpools",
         "metricScope": 0,
-        "resourceParameter": "SqlDatabase",
+        "resourceParameter": "SqlElasticPool",
         "resourceIds": [
-          "{SqlDatabase}"
+          "{SqlElasticPool}"
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
@@ -179,8 +176,8 @@
         },
         "metrics": [
           {
-            "namespace": "microsoft.sql/servers/databases",
-            "metric": "microsoft.sql/servers/databases-Basic-cpu_percent",
+            "namespace": "microsoft.sql/servers/elasticpools",
+            "metric": "microsoft.sql/servers/elasticpools-Basic-cpu_percent",
             "aggregation": 4,
             "splitBy": null,
             "columnName": "CpuPct"
@@ -192,7 +189,7 @@
         }
       },
       "conditionalVisibility": {
-        "parameterName": "SqlDatabase",
+        "parameterName": "SqlElasticPool",
         "comparison": "isNotEqualTo"
       },
       "customWidth": "50",
@@ -205,11 +202,11 @@
         "version": "MetricsItem/2.0",
         "size": 0,
         "chartType": 2,
-        "resourceType": "microsoft.sql/servers/databases",
+        "resourceType": "microsoft.sql/servers/elasticpools",
         "metricScope": 0,
-        "resourceParameter": "SqlDatabase",
+        "resourceParameter": "SqlElasticPool",
         "resourceIds": [
-          "{SqlDatabase}"
+          "{SqlElasticPool}"
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
@@ -217,8 +214,8 @@
         },
         "metrics": [
           {
-            "namespace": "microsoft.sql/servers/databases",
-            "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-sqlserver_process_memory_percent",
+            "namespace": "microsoft.sql/servers/elasticpools",
+            "metric": "microsoft.sql/servers/elasticpools-InstanceAndAppAdvanced-sqlserver_process_memory_percent",
             "aggregation": 4,
             "splitBy": null,
             "columnName": "MemoryPct"
@@ -230,7 +227,7 @@
         }
       },
       "conditionalVisibility": {
-        "parameterName": "SqlDatabase",
+        "parameterName": "SqlElasticPool",
         "comparison": "isNotEqualTo"
       },
       "customWidth": "50",
@@ -243,11 +240,11 @@
         "version": "MetricsItem/2.0",
         "size": 0,
         "chartType": 2,
-        "resourceType": "microsoft.sql/servers/databases",
+        "resourceType": "microsoft.sql/servers/elasticpools",
         "metricScope": 0,
-        "resourceParameter": "SqlDatabase",
+        "resourceParameter": "SqlElasticPool",
         "resourceIds": [
-          "{SqlDatabase}"
+          "{SqlElasticPool}"
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
@@ -255,8 +252,8 @@
         },
         "metrics": [
           {
-            "namespace": "microsoft.sql/servers/databases",
-            "metric": "microsoft.sql/servers/databases-Basic-physical_data_read_percent",
+            "namespace": "microsoft.sql/servers/elasticpools",
+            "metric": "microsoft.sql/servers/elasticpools-Basic-physical_data_read_percent",
             "aggregation": 4,
             "splitBy": null,
             "columnName": "DataIOPct"
@@ -268,7 +265,7 @@
         }
       },
       "conditionalVisibility": {
-        "parameterName": "SqlDatabase",
+        "parameterName": "SqlElasticPool",
         "comparison": "isNotEqualTo"
       },
       "customWidth": "50",
@@ -281,11 +278,11 @@
         "version": "MetricsItem/2.0",
         "size": 0,
         "chartType": 2,
-        "resourceType": "microsoft.sql/servers/databases",
+        "resourceType": "microsoft.sql/servers/elasticpools",
         "metricScope": 0,
-        "resourceParameter": "SqlDatabase",
+        "resourceParameter": "SqlElasticPool",
         "resourceIds": [
-          "{SqlDatabase}"
+          "{SqlElasticPool}"
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
@@ -293,8 +290,8 @@
         },
         "metrics": [
           {
-            "namespace": "microsoft.sql/servers/databases",
-            "metric": "microsoft.sql/servers/databases-Basic-log_write_percent",
+            "namespace": "microsoft.sql/servers/elasticpools",
+            "metric": "microsoft.sql/servers/elasticpools-Basic-log_write_percent",
             "aggregation": 4,
             "splitBy": null,
             "columnName": "LogIOPct"
@@ -306,17 +303,50 @@
         }
       },
       "conditionalVisibility": {
-        "parameterName": "SqlDatabase",
+        "parameterName": "SqlElasticPool",
         "comparison": "isNotEqualTo"
       },
       "customWidth": "50",
       "name": "metrics - SqlLogIOPct"
     },
     {
+      "type": 1,
+      "content": {
+        "json": "### Click an elastic pool to view the list of databases in the pool"
+      },
+      "conditionalVisibility": {
+        "parameterName": "SqlElasticPool",
+        "comparison": "isNotEqualTo"
+      },
+      "name": "text - Elastic Pools"
+    },
+    {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/servers/databases'\r\n| where resourceGroup in ({ResourceGroup})\r\n| where id in ({SqlDatabase}) and name != 'master'\r\n| project ResourceId = id, Region = location, tier = tostring(sku.tier), family = tostring(sku.family), dtus = case(kind contains \"vcore\", 0, sku.capacity), vcores = case(kind contains \"vcore\", sku.capacity, 0), backupStorageType = tostring(properties.storageAccountType), zoneRedundant = tostring(properties.zoneRedundant), collation = tostring(properties.catalogCollation), earliestRestoreDate = tostring(properties.earliestRestoreDate), maxSizeGB = properties.maxSizeBytes / 1024 / 1024 / 1024, readScale = tostring(properties.readScale), subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/servers/elasticpools'\r\n| where resourceGroup in ({ResourceGroup})\r\n| where id in ({SqlElasticPool})\r\n| project ResourceId = id, Region = location, tier = tostring(sku.tier), family = tostring(sku.family), dtus = case(kind contains \"vcore\", 0, sku.capacity), vcores = case(kind contains \"vcore\", sku.capacity, 0), minCapacity = toint(properties.perDatabaseSettings.minCapacity), maxCapacity = toint(toint(properties.perDatabaseSettings.maxCapacity)), zoneRedundant = tostring(properties.zoneRedundant), maxSizeGB = properties.maxSizeBytes / 1024 / 1024 / 1024, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Elastic Pool Info",
+        "exportFieldName": "ResourceId",
+        "exportParameterName": "ResourceId",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "SqlElasticPool",
+        "comparison": "isNotEqualTo"
+      },
+      "name": "query - elastic pool details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/servers/databases'\r\n| extend elasticPoolId = tolower(tostring(properties.elasticPoolId))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == 'microsoft.sql/servers/elasticpools'\r\n    | where resourceGroup in ({ResourceGroup})\r\n    | where id == \"{ResourceId}\"\r\n    | project elasticPoolId = tolower(tostring(id))\r\n) on elasticPoolId\r\n| where name != 'master'\r\n| project ElasticPoolId = elasticPoolId, ResourceId = id, Region = location, backupStorageType = tostring(properties.storageAccountType), zoneRedundant = tostring(properties.zoneRedundant), collation = tostring(properties.catalogCollation), earliestRestoreDate = tostring(properties.earliestRestoreDate), maxSizeGB = properties.maxSizeBytes / 1024 / 1024 / 1024, readScale = tostring(properties.readScale), subscriptionId = strcat('/subscriptions/', subscriptionId)",
         "size": 1,
         "title": "Database Info",
         "showExportToExcel": true,
@@ -335,7 +365,7 @@
         }
       },
       "conditionalVisibility": {
-        "parameterName": "SqlDatabase",
+        "parameterName": "ResourceId",
         "comparison": "isNotEqualTo"
       },
       "name": "query - database details"
@@ -345,6 +375,10 @@
       "content": {
         "json": "### To review Query Store metrics you will need to point to the Log Analytics Workspace that is capturing the Query Store diagnostic settings"
       },
+      "conditionalVisibility": {
+        "parameterName": "ResourceId",
+        "comparison": "isNotEqualTo"
+      },
       "name": "text - Log Analytics"
     },
     {
@@ -352,7 +386,7 @@
       "content": {
         "version": "KqlParameterItem/1.0",
         "crossComponentResources": [
-          "{Subscription}"
+          "{SubscriptionLA}"
         ],
         "parameters": [
           {
@@ -401,10 +435,7 @@
             },
             "defaultValue": "value::all",
             "queryType": 1,
-            "resourceType": "microsoft.resourcegraph/resources",
-            "value": [
-              "value::all"
-            ]
+            "resourceType": "microsoft.resourcegraph/resources"
           },
           {
             "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
@@ -425,12 +456,42 @@
             },
             "queryType": 1,
             "resourceType": "microsoft.resourcegraph/resources",
-            "value": null
+            "value": "/subscriptions/9204f233-abf1-4491-ad9a-fffb219edbfa/resourceGroups/ADFLabDevRG/providers/Microsoft.OperationalInsights/workspaces/devrh1976loganalytics"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "ElasticPoolDatabase",
+            "type": 5,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == 'microsoft.sql/servers/databases'\r\n| extend elasticPoolId = tolower(tostring(properties.elasticPoolId))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == 'microsoft.sql/servers/elasticpools'\r\n    | where resourceGroup in ({ResourceGroup})\r\n    | where id == \"{ResourceId}\"\r\n    | project elasticPoolId = tolower(tostring(id))\r\n) on elasticPoolId\r\n| where name != 'master'\r\n| project SqlDatabase = id",
+            "crossComponentResources": [
+              "{SubscriptionLA}"
+            ],
+            "isHiddenWhenLocked": true,
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "id": "0b84896a-d267-4567-a0d6-49ebd8a4077f"
           }
         ],
         "style": "pills",
         "queryType": 1,
         "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "ResourceId",
+        "comparison": "isNotEqualTo"
       },
       "name": "parameters - Log Analytics"
     },
@@ -438,7 +499,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize DurationMinutes = round(sum(duration_d) / 60000000, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize DurationMinutes = round(sum(duration_d) / 60000000, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "Duration Minutes",
         "queryType": 0,
@@ -458,7 +519,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize CpuMinutes = round(sum(cpu_time_d) / 60000000, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize CpuMinutes = round(sum(cpu_time_d) / 60000000, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "CPU Minutes",
         "queryType": 0,
@@ -478,7 +539,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "Logical Reads MB",
         "queryType": 0,
@@ -498,7 +559,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "Physical Reads MB",
         "queryType": 0,
@@ -518,7 +579,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "Logical Writes MB",
         "queryType": 0,
@@ -538,7 +599,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize QueryMaxUsedMemoryMB = round(sum(query_max_used_memory_d) / 1024, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize QueryMaxUsedMemoryMB = round(sum(query_max_used_memory_d) / 1024, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "Query Max Used Memory MB",
         "queryType": 0,
@@ -558,7 +619,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "Log MB Used",
         "queryType": 0,
@@ -578,7 +639,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreWaitStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, start_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreWaitStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, start_time\r\n| render timechart",
         "size": 0,
         "title": "Wait Time Minutes",
         "queryType": 0,
@@ -609,7 +670,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| summarize DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMaxUsedMemoryMB = round(sum(query_max_used_memory_d) / 1024, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource\r\n| join kind = inner (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId in~({SqlDatabase})\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource\r\n) on Resource\r\n| project Resource, DurationMinutes, CpuMinutes, LogicalReadsMB, PhysicalReadsMB, LogicalWritesMB, QueryMaxUsedMemoryMB, LogMBUsed, WaitTimeMinutes",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({ElasticPoolDatabase})\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| summarize DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMaxUsedMemoryMB = round(sum(query_max_used_memory_d) / 1024, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource\r\n| join kind = inner (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId in~({ElasticPoolDatabase})\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource\r\n) on Resource\r\n| project Resource, DurationMinutes, CpuMinutes, LogicalReadsMB, PhysicalReadsMB, LogicalWritesMB, QueryMaxUsedMemoryMB, LogMBUsed, WaitTimeMinutes",
         "size": 1,
         "title": "Query store totals by database",
         "exportFieldName": "Resource",
