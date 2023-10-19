@@ -161,7 +161,7 @@
         "queryType": 1,
         "resourceType": "microsoft.resourcegraph/resources"
       },
-      "name": "parameters - Sql Elastic Pool"
+      "name": "parameters - Sql Managed Instance"
     },
     {
       "type": 10,
