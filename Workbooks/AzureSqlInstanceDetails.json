@@ -1,0 +1,1059 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Azure SQL Instance Catalog"
+      },
+      "name": "text - Header"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "110bd83a-7b1e-4321-ad73-887fb6890f01",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Azure SQL Managed Instances",
+            "subTarget": "AzureSqlMiTab",
+            "style": "link"
+          },
+          {
+            "id": "03e8ead4-6d64-45aa-8abc-86f675b21641",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Azure SQL Databases",
+            "subTarget": "AzureSqlDbTab",
+            "style": "link"
+          },
+          {
+            "id": "c7f3a897-25d9-4f1f-9bb1-e7f5ba12f14a",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Azure SQL Virtual Machines",
+            "subTarget": "AzureSqlVmTab",
+            "style": "link"
+          },
+          {
+            "id": "ee93ecf3-ca40-4753-9352-c3f809b54371",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Arc-Enabled SQL Servers",
+            "subTarget": "ArcSqlServerTab",
+            "style": "link"
+          },
+          {
+            "id": "bf359a59-29c3-4894-a179-5cb498906f72",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Arc SQL Managed Instances",
+            "subTarget": "ArcSqlMiTab",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "links - 25"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Azure SQL Managed Instances"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AzureSqlMiTab"
+      },
+      "name": "text - Azure SQL MI Sub Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{SqlMiSubscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlMiSubscription",
+            "label": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlMiResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.sql/managedinstances\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{SqlMiSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlManagedInstance",
+            "label": "SQL Managed Instance",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.sql/managedinstances\"\r\n| where resourceGroup in ({SqlMiResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{SqlMiSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AzureSqlMiTab"
+      },
+      "name": "parameters - Azure SQL MI"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click a managed instance to view the list of databases in the catalog"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlMiTab"
+        }
+      ],
+      "name": "text - Azure SQL Managed Instances"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/managedinstances'\r\n| where resourceGroup in ({SqlMiResourceGroup})\r\n| where id in ({SqlManagedInstance})\r\n| project ResourceId = id, Region = location, tier = tostring(sku.tier), family = tostring(sku.family), vcores = toint(sku.capacity), publicDataEndpointEnabled = tostring(properties.publicDataEndpointEnabled), privateEndpointConnections = tostring(array_length(properties.privateEndpointConnections)), state = tostring(properties.state), backupStorageType = tostring(properties.storageAccountType), maintenanceConfigurationId = tostring(properties.maintenanceConfigurationId), zoneRedundant = tostring(properties.zoneRedundant), collation = tostring(properties.collation), licenseType = tostring(properties.licenseType), StorageSizeGB = toint(properties.storageSizeInGB), minimalTlsVersion = tostring(properties.minimalTlsVersion), proxyOverride = tostring(properties.proxyOverride), dnsZone = tostring(properties.dnsZone), sqlSysAdmin = tostring(properties.administratorLogin), azureSysAdmin = tostring(properties.administrators.login), timezoneId = tostring(properties.timezoneId), systemIdentity = tostring(case(identity.principalId == \"\", \"disabled\", \"enabled\")), primaryUserAssignedIdentityId = tostring(properties.primaryUserAssignedIdentityId), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Managed Instance Info",
+        "noDataMessage": "No Azure SQL Managed Instances to display",
+        "exportFieldName": "ResourceId",
+        "exportParameterName": "SqlMiResourceId",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlMiSubscription}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlMiTab"
+        }
+      ],
+      "name": "query - Azure SQL MI details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/managedinstances/databases'\r\n| where resourceGroup in ({SqlMiResourceGroup})\r\n| extend ManagedInstanceName = extract(\".+/managedInstances/([^/]+)/.+\", 1, id)\r\n| extend ManagedInstanceId = strcat(substring(id, 0, indexof(id, \"/managedInstances\", 0)), \"/managedInstances/\", ManagedInstanceName)\r\n| where ManagedInstanceId == \"{SqlMiResourceId}\"\r\n| project ManagedInstanceId, ResourceId = id, Region = location, status = tostring(properties.status), collation = tostring(properties.collation), creationDate = tostring(properties.creationDate), earliestRestoreDate = tostring(properties.earliestRestorePoint), defaultSecondaryLocation = tostring(properties.defaultSecondaryLocation), isLedgerOn = tostring(properties.isLedgerOn), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Database Info",
+        "noDataMessage": "No Azure SQL Managed Databases to display",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlMiSubscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            },
+            {
+              "columnMatch": "earliestRestoreDate",
+              "formatter": 6
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlMiResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlMiTab"
+        }
+      ],
+      "name": "query - Azure SQL MI database details"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Azure SQL Databases"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AzureSqlDbTab"
+      },
+      "name": "text - Azure SQL DB Sub Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{SqlDbSubscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlDbSubscription",
+            "label": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlDbResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.sql/servers\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{SqlDbSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlServer",
+            "label": "SQL Database Server",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.sql/servers\"\r\n| where resourceGroup in ({SqlDbResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{SqlDbSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AzureSqlDbTab"
+      },
+      "name": "parameters - Azure SQL DB"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click a server to view the list of elastic pools and databases in the catalog"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlServer",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlDbTab"
+        }
+      ],
+      "name": "text - Azure SQL Servers"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/servers'\r\n| where resourceGroup in ({SqlDbResourceGroup})\r\n| where id in ({SqlServer})\r\n| project ResourceId = id, Region = location, state = tostring(properties.state), publicNetworkAccess = tostring(properties.publicNetworkAccess), privateEndpointConnections = tostring(array_length(properties.privateEndpointConnections)), restrictOutboundNetworkAccess = tostring(properties.restrictOutboundNetworkAccess), minimalTlsVersion = tostring(properties.minimalTlsVersion), externalGovernanceStatus = tostring(properties.externalGovernanceStatus), sqlSysAdmin = tostring(properties.administratorLogin), azureSysAdmin = tostring(properties.administrators.login), tags = tostring(tags), subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Server Info",
+        "noDataMessage": "No Azure SQL Servers to display",
+        "exportFieldName": "ResourceId",
+        "exportParameterName": "SqlDbResourceId",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlMiSubscription}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlServer",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlDbTab"
+        }
+      ],
+      "name": "query - Azure SQL DB details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/servers/elasticpools'\r\n| where resourceGroup in ({SqlDbResourceGroup})\r\n| extend ServerName = extract(\".+/servers/([^/]+)/.+\", 1, id)\r\n| extend ServerId = strcat(substring(id, 0, indexof(id, \"/servers\", 0)), \"/servers/\", ServerName)\r\n| where ServerId == \"{SqlDbResourceId}\"\r\n| project ServerId, ResourceId = id, Region = location, tier = tostring(sku.tier), family = tostring(sku.family), dtus = case(kind contains \"vcore\", 0, sku.capacity), vcores = case(kind contains \"vcore\", sku.capacity, 0), state = tostring(properties.state), zoneRedundant = tostring(properties.zoneRedundant), availabiityZone = tostring(properties.availabilityZone), creationDate = tostring(properties.creationDate), maxSizeGB = properties.maxSizeBytes / 1024 / 1024 / 1024, maintenanceConfigurationId = tostring(properties.maintenanceConfigurationId), secureEnclavesEnabled = case(properties.preferredEnclaveType == \"\", \"false\", \"true\"), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Elastic Pool Info",
+        "noDataMessage": "No Azure SQL Elastic Pools to display",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlDbSubscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlDbResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlDbTab"
+        }
+      ],
+      "name": "query - Azure SQL DB elastic pool details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/servers/databases'\r\n| where resourceGroup in ({SqlDbResourceGroup})\r\n| extend ServerName = extract(\".+/servers/([^/]+)/.+\", 1, id)\r\n| extend ServerId = strcat(substring(id, 0, indexof(id, \"/servers\", 0)), \"/servers/\", ServerName)\r\n| extend ElasticPoolId = tolower(tostring(properties.elasticPoolId))\r\n| where ServerId == \"{SqlDbResourceId}\"\r\n| project ServerId, ResourceId = id, Region = location, tier = tostring(sku.tier), family = tostring(sku.family), dtus = case(kind contains \"vcore\", 0, sku.capacity), vcores = case(kind contains \"vcore\", sku.capacity, 0), ElasticPoolId, backupStorageType = tostring(properties.currentBackupStorageRedundancy), zoneRedundant = tostring(properties.zoneRedundant), availabiityZone = tostring(properties.availabilityZone), collation = tostring(properties.catalogCollation), creationDate = tostring(properties.creationDate), earliestRestoreDate = tostring(properties.earliestRestoreDate), maxSizeGB = properties.maxSizeBytes / 1024 / 1024 / 1024, readScale = tostring(properties.readScale), maintenanceConfigurationId = tostring(properties.maintenanceConfigurationId), defaultSecondaryLocation = tostring(properties.defaultSecondaryLocation), isInfraEncryptionEnabled = tostring(properties.isInfraEncryptionEnabled), secureEnclavesEnabled = case(properties.preferredEnclaveType == \"\", \"false\", \"true\"), isLedgerOn = tostring(properties.isLedgerOn), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Database Info",
+        "noDataMessage": "No Azure SQL Databases to display",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlDbSubscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            },
+            {
+              "columnMatch": "earliestRestoreDate",
+              "formatter": 6
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlDbResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlDbTab"
+        }
+      ],
+      "name": "query - Azure SQL DB database details"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Azure SQL Virtual Machines"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AzureSqlVmTab"
+      },
+      "name": "text - Azure SQL VM Sub Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{SqlVmSubscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlVmSubscription",
+            "label": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlVmResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.sqlvirtualmachine/sqlvirtualmachines\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{SqlVmSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlVirtualMachine",
+            "label": "SQL Virtual Machine",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.sqlvirtualmachine/sqlvirtualmachines\"\r\n| where resourceGroup in ({SqlVmResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{SqlVmSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "AzureSqlVmTab"
+      },
+      "name": "parameters - Azure SQL VM"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sqlvirtualmachine/sqlvirtualmachines'\r\n| where resourceGroup in ({SqlVmResourceGroup})\r\n| where id in ({SqlVirtualMachine})\r\n| extend vmId = tolower(tostring(properties.virtualMachineResourceId))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == 'microsoft.compute/virtualmachines'\r\n    | extend vmId = tolower(id)\r\n    | project vmId, vmSize = tostring(properties.hardwareProfile.vmSize), licenseType = tostring(properties.licenseType), sku = tostring(properties.storageProfile.imageReference.sku), offer = tostring(properties.storageProfile.imageReference.offer), systemIdentity = tostring(case(identity.principalId == \"\", \"disabled\", \"enabled\")), primaryUserAssignedIdentityId = tostring(properties.primaryUserAssignedIdentityId)\r\n) on $left.vmId == $right.vmId\r\n| project ResourceId = id, Region = location, virtualMachineId = tostring(properties.virtualMachineResourceId), sqlServerLicenseType = tostring(properties.sqlServerLicenseType), sqlManagement = tostring(properties.sqlManagement), sqlImageOffer = tostring(properties.sqlImageOffer), sqlImageSku = tostring(properties.sqlImageSku), vmSize, licenseType, sku, offer, systemIdentity = tostring(case(identity.principalId == \"\", \"disabled\", \"enabled\")), primaryUserAssignedIdentityId = tostring(properties.primaryUserAssignedIdentityId), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Virtual Machine Info",
+        "noDataMessage": "No Azure SQL Virtual Machines to display",
+        "exportFieldName": "ResourceId",
+        "exportParameterName": "SqlVmResourceId",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlVmSubscription}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlVirtualMachine",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "AzureSqlVmTab"
+        }
+      ],
+      "name": "query - Azure SQL VM details"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Arc-Enabled SQL Servers"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ArcSqlServerTab"
+      },
+      "name": "text - Arc SQL Server Sub Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{ArcSqlServerSubscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "ArcSqlServerSubscription",
+            "label": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "ArcSqlServerResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{ArcSqlServerSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "ArcSqlServer",
+            "label": "Arc-Enabled SQL Server",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n| where resourceGroup in ({ArcSqlServerResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{ArcSqlServerSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ArcSqlServerTab"
+      },
+      "name": "parameters - Arc SQL Server"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click an Arc-Enabled SQL Server to view the list of databases in the catalog"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "ArcSqlServer",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "ArcSqlServerTab"
+        }
+      ],
+      "name": "text - Arc SQL Servers"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances'\r\n| where resourceGroup in ({ArcSqlServerResourceGroup})\r\n| where id in ({ArcSqlServer})\r\n| project ResourceId = id, instanceName = tostring(properties.instanceName), Region = location, status = tostring(properties.status), vCore = tostring(properties.vCore), version = tostring(properties.version), edition = tostring(properties.edition), patchLevel = tostring(properties.patchLevel), licenseType = tostring(properties.licenseType), collation = tostring(properties.collation), tcpStaticPorts = tostring(properties.tcpStaticPorts), tcpDynamicPorts = tostring(properties.tcpDynamicPorts), azureDefenderStatus = tostring(properties.azureDefenderStatus), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Arc SQL Server Info",
+        "noDataMessage": "No Arc SQL-Enabled SQL Servers to display",
+        "exportFieldName": "ResourceId",
+        "exportParameterName": "ArcSqlServerResourceId",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{ArcSqlServerSubscription}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "ArcSqlServer",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "ArcSqlServerTab"
+        }
+      ],
+      "name": "query - Arc SQL Server details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances/databases'\r\n| where resourceGroup in ({ArcSqlServerResourceGroup})\r\n| extend ArcSqlServerName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n| extend ArcSqlServerId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", ArcSqlServerName)\r\n| where ArcSqlServerId == \"{ArcSqlServerResourceId}\"\r\n| project ArcSqlServerId, ResourceId = id, Region = location, state = tostring(properties.state), creationDate = tostring(properties.databaseCreationDate), compatibilityLevel = tostring(properties.compatibilityLevel), lastFullBackup = tostring(properties.backupInformation.lastFullBackup), lastLogBackup = tostring(properties.backupInformation.lastLogBackup), sizeMB = tostring(properties.sizeMB), spaceAvailableMB = tostring(properties.spaceAvailableMB), collationName = tostring(properties.collationName), recoveryMode = tostring(properties.recoveryMode), isReadOnly = tostring(properties.isReadOnly), isMemoryOptimizationEnabled = tostring(properties.databaseOptions.isMemoryOptimizationEnabled), isRemoteDataArchiveEnabled = tostring(properties.databaseOptions.isRemoteDataArchiveEnabled), isAutoUpdateStatsOn = tostring(properties.databaseOptions.isAutoUpdateStatsOn), isAutoCreateStatsOn = tostring(properties.databaseOptions.isAutoCreateStatsOn), isTrustworthyOn = tostring(properties.databaseOptions.isTrustworthyOn), isAutoShrinkOn = tostring(properties.databaseOptions.isAutoShrinkOn), isAutoCloseOn = tostring(properties.databaseOptions.isAutoCloseOn), isEncrypted = tostring(properties.databaseOptions.isEncrypted), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Database Info",
+        "noDataMessage": "No Arc-Enabled SQL Server Databases to display",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlMiSubscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            },
+            {
+              "columnMatch": "lastFullBackup",
+              "formatter": 6
+            },
+            {
+              "columnMatch": "lastLogBackup",
+              "formatter": 6
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "ArcSqlServerResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "ArcSqlServerTab"
+        }
+      ],
+      "name": "query - Arc SQL Server database details"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Arc SQL Managed Instances"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ArcSqlMiTab"
+      },
+      "name": "text - Arc SQL MI Sub Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{ArcSqlMiSubscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "ArcSqlMiSubscription",
+            "label": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "ArcSqlMiResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.azurearcdata/sqlmanagedinstances\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{ArcSqlMiSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "ArcSqlManagedInstance",
+            "label": "Arc SQL Managed Instance",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.azurearcdata/sqlmanagedinstances\"\r\n| where resourceGroup in ({ArcSqlMiResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{ArcSqlMiSubscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ArcSqlMiTab"
+      },
+      "name": "parameters - Arc SQL MI"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click an Arc Sql Managed Instance to view the list of replicas"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "ArcSqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "ArcSqlMiTab"
+        }
+      ],
+      "name": "text - Arc SQL Managed Instances"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.azurearcdata/sqlmanagedinstances'\r\n//| where resourceGroup in ({ArcSqlMiResourceGroup})\r\n//| where id in ({ArcSqlManagedInstance})\r\n| project ResourceId = id, Region = location, tier = tostring(sku.tier), namespace = tostring(properties.k8sRaw.metadata.namespace), customLocation = tostring(extendedLocation.name), dataController = tostring(properties.dataControllerId)\r\n, cpu = strcat(tostring(properties.k8sRaw.spec.scheduling.default.resources.requests.cpu), \" \\\\ \", tostring(properties.k8sRaw.spec.scheduling.default.resources.limits.cpu)), memory = strcat(tostring(properties.k8sRaw.spec.scheduling.default.resources.requests.memory), \" \\\\ \", tostring(properties.k8sRaw.spec.scheduling.default.resources.limits.memory)), dev = tostring(properties.k8sRaw.spec.dev), licenseType = tostring(properties.licenseType), sqlSysAdmin = tostring(properties.admin), state = tostring(properties.k8sRaw.status.state), primaryEndpoint = tostring(properties.k8sRaw.status.endpoints.primary), secondaryEndpoint = tostring(properties.k8sRaw.status.endpoints.primary), logsearchDashboard = tostring(properties.k8sRaw.status.endpoints.logSearchDashboard), metricsDashboard = tostring(properties.k8sRaw.status.endpoints.metricsDashboard), collation = tostring(properties.k8sRaw.spec.settings.collation), replicas = tostring(properties.k8sRaw.spec.replicas), readableSecondaries = tostring(properties.k8sRaw.spec.readableSecondaries), haHealth = tostring(properties.k8sRaw.status.highAvailability.healthState), tlsprotocols = tostring(properties.k8sRaw.spec.settings.network.tlsprotocols), forceencryption = tostring(properties.k8sRaw.spec.settings.network.forceencryption), language = tostring(properties.k8sRaw.spec.settings.language.lcid), sqlagent = case(properties.k8sRaw.spec.settings.sqlagent.enabled == \"true\", \"enabled\", \"disabled\"), timezone = tostring(properties.k8sRaw.spec.settings.timezone), traceflags = tostring(properties.k8sRaw.spec.settings.traceflags), dataStorage = strcat(tostring(properties.k8sRaw.spec.storage.data.volumes[0].className), \" \", tostring(properties.k8sRaw.spec.storage.data.volumes[0].size)), logStorage = strcat(tostring(properties.k8sRaw.spec.storage.logs.volumes[0].className), \" \", tostring(properties.k8sRaw.spec.storage.logs.volumes[0].size)), datalogStorage = strcat(tostring(properties.k8sRaw.spec.storage.datalogs.volumes[0].className), \" \", tostring(properties.k8sRaw.spec.storage.datalogs.volumes[0].size)), backupStorage = strcat(tostring(properties.k8sRaw.spec.storage.backups.volumes[0].className), \" \", tostring(properties.k8sRaw.spec.storage.backups.volumes[0].size)), haOrchestratorStorage = tostring(properties.k8sRaw.spec.storage.haOrchestratorLogs.volumes[0].size), backupRetenionDays = tostring(properties.k8sRaw.spec.backup.retentionPeriodInDays), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Arc SQL Managed Instance Info",
+        "noDataMessage": "No Arc SQL Managed Instances to display",
+        "exportFieldName": "ResourceId",
+        "exportParameterName": "ArcSqlMiResourceId",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlMiSubscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "logsearchDashboard",
+              "formatter": 7,
+              "formatOptions": {
+                "linkTarget": "Url"
+              }
+            },
+            {
+              "columnMatch": "metricsDashboard",
+              "formatter": 7,
+              "formatOptions": {
+                "linkTarget": "Url"
+              }
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "ArcSqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "ArcSqlMiTab"
+        }
+      ],
+      "name": "query - Arc SQL MI details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.azurearcdata/sqlmanagedinstances'\r\n| where resourceGroup in ({ArcSqlMiResourceGroup})\r\n| where id == \"{ArcSqlMiResourceId}\"\r\n| mv-expand  replicas = properties.k8sRaw.status.highAvailability.replicas\r\n| project ResourceId = id, replicaName = tostring(replicas.replicaName), role = tostring(replicas.role), availabilityMode = tostring(replicas.availabilityMode), connectedState = tostring(replicas.connectedState), healthState = tostring(replicas.healthState), synchronizationState = tostring(replicas.synchronizationState), secondaryRoleAllowConnections = tostring(replicas.secondaryRoleAllowConnections)",
+        "size": 1,
+        "title": "Replica Info",
+        "noDataMessage": "No Arc SQL Managed Replicas to display",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{SqlMiSubscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            },
+            {
+              "columnMatch": "earliestRestoreDate",
+              "formatter": 6
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "ArcSqlMiResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "ArcSqlMiTab"
+        }
+      ],
+      "name": "query - Arc SQL MI replica details"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
