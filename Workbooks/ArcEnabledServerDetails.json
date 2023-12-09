@@ -1,0 +1,865 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Arc Enabled SQL Server Catalog"
+      },
+      "name": "text - Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "label": "",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "ResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.hybridcompute/machines\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "Machine",
+            "label": "Arc-Enabled Machine",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where resourceGroup in ({ResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "110bd83a-7b1e-4321-ad73-887fb6890f01",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Machines",
+            "subTarget": "MachinesTab",
+            "style": "link"
+          },
+          {
+            "id": "03e8ead4-6d64-45aa-8abc-86f675b21641",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "SQL Extension Status",
+            "subTarget": "ExtensionStatusTab",
+            "style": "link"
+          },
+          {
+            "id": "fd06b764-79dc-4eb2-9bb3-43bff6863f06",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "SQL Servers Catalogued",
+            "subTarget": "CataloguedTab",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "tabs"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Onboarded Machines"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "MachinesTab"
+      },
+      "name": "text - Machines Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "53238308-c370-4601-a2e6-b9c7b723089f",
+            "version": "KqlParameterItem/1.0",
+            "name": "provisioningState",
+            "label": "Provisioning State",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project provisioningState = tostring(properties.provisioningState)\r\n| distinct provisioningState",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "ad87fd3f-b79f-42cb-85d9-6bac12c5f310",
+            "version": "KqlParameterItem/1.0",
+            "name": "status",
+            "label": "Status",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project status = tostring(properties.status)\r\n| distinct status",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "10909b09-76cf-47f0-9ea9-85f0c9dc38bc",
+            "version": "KqlParameterItem/1.0",
+            "name": "osType",
+            "label": "OS Type",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project osType = tostring(properties.osType)\r\n| distinct osType",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "f8926f08-b43f-4c88-9a97-c815714eaa1b",
+            "version": "KqlParameterItem/1.0",
+            "name": "sqlInstalled",
+            "label": "SQL Server Installed",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "jsonData": "[\r\n    {\"value\": \"true\", \"label\": \"Yes\"},\r\n    {\"value\": \"false\", \"label\": \"No\"}\r\n]",
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "b24c5d6f-32c4-4d20-ba41-d534454a9320",
+            "version": "KqlParameterItem/1.0",
+            "name": "extensionService",
+            "label": "Extension Service",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project extensionService = tostring(properties.serviceStatuses.extensionService.status)\r\n| distinct extensionService",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "7cd8a609-e2a7-45a7-ad48-4e2d040e1db7",
+            "version": "KqlParameterItem/1.0",
+            "name": "esuEligibility",
+            "label": "ESU Eligibility",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n| distinct esuEligibility",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          }
+        ],
+        "style": "pills",
+        "doNotRunWhenHidden": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "MachinesTab"
+      },
+      "customWidth": "50",
+      "name": "parameters - SQL Installed"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project\r\n    id\r\n    , provisioningState = tostring(properties.provisioningState)\r\n    , status = tostring(properties.status)\r\n    , osType = tostring(properties.osType)\r\n    , sqlInstalled = tostring(properties.detectedProperties.mssqldiscovered)\r\n    , extensionService = tostring(properties.serviceStatuses.extensionService.status)\r\n    , esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n| where provisioningState in ({provisioningState})\r\n| where status in ({status})\r\n| where osType in ({osType})\r\n| where sqlInstalled in ({sqlInstalled})\r\n| where extensionService in ({extensionService})\r\n| where esuEligibility in ({esuEligibility})\r\n| summarize machineCount = count() by sqlInstalled",
+        "size": 3,
+        "title": "Onboarded machines with SQL Server Installed",
+        "noDataMessage": "No machines onboarded!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "visualization": "piechart",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "true",
+              "label": "Installed",
+              "color": "green"
+            },
+            {
+              "seriesName": "false",
+              "label": "Not installed",
+              "color": "gray"
+            }
+          ]
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "MachinesTab"
+      },
+      "customWidth": "50",
+      "name": "query - Machine Summary"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project\r\n    id\r\n    , location\r\n    , provisioningState = tostring(properties.provisioningState)\r\n    , status = tostring(properties.status)\r\n    , osType = tostring(properties.osType)\r\n    , osSku = tostring(properties.osSku)\r\n    , osVersion = tostring(properties.osVersion)\r\n    , processorCount = tostring(properties.detectedProperties.processorCount)\r\n    , processorNames = tostring(properties.detectedProperties.processorNames)\r\n    , coreCount = tostring(properties.detectedProperties.coreCount)\r\n    , logicalCores = tostring(properties.detectedProperties.logicalCoreCount)\r\n    , memoryGB = tostring(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\r\n    , sqlInstalled = tostring(properties.detectedProperties.mssqldiscovered)\r\n    , cloudProvider = tostring(properties.detectedProperties.cloudprovider)\r\n    , model = tostring(properties.detectedProperties.model)\r\n    , extensionService = tostring(properties.serviceStatuses.extensionService.status)\r\n    , esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n    , machineFqdn = tostring(properties.machineFqdn)\r\n    , tags\r\n    , resourceGroup = strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup)\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)\r\n| where provisioningState in ({provisioningState})\r\n| where status in ({status})\r\n| where osType in ({osType})\r\n| where sqlInstalled in ({sqlInstalled})\r\n| where extensionService in ({extensionService})\r\n| where esuEligibility in ({esuEligibility})\r\n",
+        "size": 1,
+        "title": "Onboarded machine details",
+        "noDataMessage": "No machines onboarded!",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "MachinesTab"
+      },
+      "name": "query - Machine Details"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## SQL Server Machines"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ExtensionStatusTab"
+      },
+      "name": "text - Extension Status Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "8e4bce7c-564f-4ae9-b0a6-95e767706225",
+            "version": "KqlParameterItem/1.0",
+            "name": "provisioningState",
+            "label": "SQL Provisioning State",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id))\r\n| join kind = leftouter (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| extend provisioningState = case(provisioningState == \"\", \"Not Installed\", provisioningState)\r\n| distinct provisioningState",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "223b9742-ae45-45b3-b3f5-4c65cc585fa6",
+            "version": "KqlParameterItem/1.0",
+            "name": "uploadStatus",
+            "label": "SQL Upload Status",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id))\r\n| join kind = leftouter (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | extend uploadStatus = case(uploadStatus == \"\", \"Extension Failed\", uploadStatus)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| distinct uploadStatus",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "6e0ab105-8a08-43d6-aa61-698baac85fbb",
+            "version": "KqlParameterItem/1.0",
+            "name": "instancesCatalogued",
+            "label": "Instances Catalogued",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "jsonData": "[\r\n    {\"value\": \"Yes\", \"label\": \"Yes\"},\r\n    {\"value\": \"No\", \"label\": \"No\"}\r\n]",
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "ac31fa99-ab30-4ed4-83fc-cc103937221e",
+            "version": "KqlParameterItem/1.0",
+            "name": "licenseType",
+            "label": "License Type",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id))\r\n| join kind = leftouter (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend licenseType = case(licenseType == \"\", \"Extension Failed\", licenseType)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| distinct licenseType",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          }
+        ],
+        "style": "pills",
+        "doNotRunWhenHidden": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ExtensionStatusTab"
+      },
+      "customWidth": "100",
+      "name": "parameters - SQL Installed - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id)), location1 = location, resourceGroup1 = resourceGroup, subscriptionId1 = subscriptionId\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| extend provisioningState = case(provisioningState == \"\", \"Not Installed\", provisioningState)\r\n| where provisioningState in ({provisioningState})\r\n| extend uploadStatus = case(uploadStatus == \"\", \"Extension Failed\", uploadStatus)\r\n| where uploadStatus in ({uploadStatus})\r\n| extend licenseType = case(licenseType == \"\", \"Extension Failed\", licenseType)\r\n| where licenseType in ({licenseType})\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineid = tolower(tostring(properties.containerResourceId))\r\n    | summarize instanceCount = count() by machineid\r\n) on machineid\r\n| extend instanceCount = todouble(case(isnull(instanceCount), 0, instanceCount))\r\n| extend instancesCatalogued = case(instanceCount == 0, \"No\", \"Yes\")\r\n| where instancesCatalogued in ({instancesCatalogued})\r\n| summarize machineCount = count() by provisioningState",
+        "size": 3,
+        "title": "SQL Extension Provisioning State",
+        "noDataMessage": "No SQL Server machines found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "piechart",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Succeeded",
+              "color": "green"
+            },
+            {
+              "seriesName": "Not Installed",
+              "color": "gray"
+            },
+            {
+              "seriesName": "Failed",
+              "color": "redBright"
+            },
+            {
+              "seriesName": "Creating",
+              "color": "yellow"
+            }
+          ]
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ExtensionStatusTab"
+      },
+      "customWidth": "50",
+      "name": "query - Extension Status Summary"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id)), location1 = location, resourceGroup1 = resourceGroup, subscriptionId1 = subscriptionId\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| extend provisioningState = case(provisioningState == \"\", \"Not Installed\", provisioningState)\r\n| where provisioningState in ({provisioningState})\r\n| extend uploadStatus = case(uploadStatus == \"\", \"Extension Failed\", uploadStatus)\r\n| where uploadStatus in ({uploadStatus})\r\n| extend licenseType = case(licenseType == \"\", \"Extension Failed\", licenseType)\r\n| where licenseType in ({licenseType})\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineid = tolower(tostring(properties.containerResourceId))\r\n    | summarize instanceCount = count() by machineid\r\n) on machineid\r\n| extend instanceCount = todouble(case(isnull(instanceCount), 0, instanceCount))\r\n| extend instancesCatalogued = case(instanceCount == 0, \"No\", \"Yes\")\r\n| where instancesCatalogued in ({instancesCatalogued})\r\n| summarize machineCount = count() by uploadStatus",
+        "size": 3,
+        "title": "SQL Server Instance Upload Status",
+        "noDataMessage": "No SQL Server machines found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "piechart",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "OK",
+              "label": "",
+              "color": "green"
+            },
+            {
+              "seriesName": "Forbidden",
+              "color": "redBright"
+            },
+            {
+              "seriesName": "0",
+              "color": "yellow"
+            },
+            {
+              "seriesName": "Extension Failed",
+              "color": "gray"
+            }
+          ]
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ExtensionStatusTab"
+      },
+      "customWidth": "50",
+      "name": "query - Upload Status Summary"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id)), location1 = location, resourceGroup1 = resourceGroup, subscriptionId1 = subscriptionId\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| extend provisioningState = case(provisioningState == \"\", \"Not Installed\", provisioningState)\r\n| where provisioningState in ({provisioningState})\r\n| extend uploadStatus = case(uploadStatus == \"\", \"Extension Failed\", uploadStatus)\r\n| where uploadStatus in ({uploadStatus})\r\n| extend licenseType = case(licenseType == \"\", \"Extension Failed\", licenseType)\r\n| where licenseType in ({licenseType})\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineid = tolower(tostring(properties.containerResourceId))\r\n    | summarize instanceCount = count() by machineid\r\n) on machineid\r\n| extend instanceCount = todouble(case(isnull(instanceCount), 0, instanceCount))\r\n| extend instancesCatalogued = case(instanceCount == 0, \"No\", \"Yes\")\r\n| where instancesCatalogued in ({instancesCatalogued})\r\n| summarize machineCount = count() by instancesCatalogued",
+        "size": 3,
+        "title": "SQL Server Instances Catalogued",
+        "noDataMessage": "No SQL Server machines found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "piechart",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Yes",
+              "color": "green"
+            },
+            {
+              "seriesName": "No",
+              "color": "gray"
+            }
+          ]
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ExtensionStatusTab"
+      },
+      "customWidth": "50",
+      "name": "query - SQL Server Instances Catalogued"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id)), location1 = location, resourceGroup1 = resourceGroup, subscriptionId1 = subscriptionId\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| extend provisioningState = case(provisioningState == \"\", \"Not Installed\", provisioningState)\r\n| where provisioningState in ({provisioningState})\r\n| extend uploadStatus = case(uploadStatus == \"\", \"Extension Failed\", uploadStatus)\r\n| where uploadStatus in ({uploadStatus})\r\n| extend licenseType = case(licenseType == \"\", \"Extension Failed\", licenseType)\r\n| where licenseType in ({licenseType})\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineid = tolower(tostring(properties.containerResourceId))\r\n    | summarize instanceCount = count() by machineid\r\n) on machineid\r\n| extend instanceCount = todouble(case(isnull(instanceCount), 0, instanceCount))\r\n| extend instancesCatalogued = case(instanceCount == 0, \"No\", \"Yes\")\r\n| where instancesCatalogued in ({instancesCatalogued})\r\n| summarize machineCount = count() by licenseType",
+        "size": 3,
+        "title": "SQL Server License Types",
+        "noDataMessage": "No SQL Server machines found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "piechart",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Extension Failed",
+              "color": "gray"
+            },
+            {
+              "seriesName": "Paid",
+              "color": "green"
+            },
+            {
+              "seriesName": "LicenseOnly",
+              "color": "blueDark"
+            }
+          ]
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ExtensionStatusTab"
+      },
+      "customWidth": "50",
+      "name": "query - SQL Server License Types"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id)), location1 = location, resourceGroup1 = resourceGroup, subscriptionId1 = subscriptionId\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | parse properties with * 'Extension Message: ' extensionMessage ';' *\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend excludedInstances = tostring(properties.settings.ExcludedInstances)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| extend provisioningState = case(provisioningState == \"\", \"Not Installed\", provisioningState)\r\n| where provisioningState in ({provisioningState})\r\n| extend uploadStatus = case(uploadStatus == \"\", \"Extension Failed\", uploadStatus)\r\n| where uploadStatus in ({uploadStatus})\r\n| extend licenseType = case(licenseType == \"\", \"Extension Failed\", licenseType)\r\n| where licenseType in ({licenseType})\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineid = tolower(tostring(properties.containerResourceId))\r\n    | summarize instanceCount = count() by machineid\r\n) on machineid\r\n| extend instanceCount = todouble(case(isnull(instanceCount), 0, instanceCount))\r\n| extend instancesCatalogued = case(instanceCount == 0, \"No\", \"Yes\")\r\n| where instancesCatalogued in ({instancesCatalogued})\r\n| project\r\n    machineid\r\n    , id\r\n    , location = case(location == \"\", location1, location)\r\n    , provisioningState\r\n    , extensionMessage\r\n    , uploadStatus\r\n    , instancesCatalogued\r\n    , instanceCount\r\n    , licenseType\r\n    , excludedInstances\r\n    , tags\r\n    , resourceGroup = case(resourceGroup == \"\", strcat('/subscriptions/', subscriptionId1, '/resourceGroups/',resourceGroup1), strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup))\r\n    , subscriptionId = case(subscriptionId == \"\", strcat('/subscriptions/', subscriptionId1), strcat('/subscriptions/', subscriptionId))",
+        "size": 1,
+        "title": "SQL Server machines",
+        "noDataMessage": "No SQL Server machines found!",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "uploadStatus",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "uploadStatus",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "ExtensionStatusTab"
+      },
+      "name": "query - SQL Extension Details"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project machineId = tolower(id)\r\n| join kind=inner (\r\n    resources\r\n    | where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances'\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n    | extend instanceId = id\r\n) on machineId\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances/databases'\r\n    | extend instanceName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n    | extend instanceId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", instanceName)\r\n    | summarize databaseCount = count() by instanceId\r\n) on instanceId\r\n| project\r\n    machineId\r\n    , instanceId\r\n    , instanceName = tostring(properties.instanceName)\r\n    , Region = location, status = tostring(properties.status)\r\n    , vCore = tostring(properties.vCore)\r\n    , version = tostring(properties.version)\r\n    , edition = tostring(properties.edition)\r\n    , patchLevel = tostring(properties.patchLevel)\r\n    , licenseType = tostring(properties.licenseType)\r\n    , databaseCount\r\n    , collation = tostring(properties.collation)\r\n    , tcpStaticPorts = tostring(properties.tcpStaticPorts)\r\n    , tcpDynamicPorts = tostring(properties.tcpDynamicPorts)\r\n    , azureDefenderStatus = tostring(properties.azureDefenderStatus)\r\n    , tags\r\n    , resourceGroup = case(resourceGroup == \"\", strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup), strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup))\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Arc SQL Server Info",
+        "noDataMessage": "No Arc SQL-Enabled SQL Servers to display",
+        "exportMultipleValues": true,
+        "exportedParameters": [
+          {
+            "fieldName": "instanceId",
+            "parameterName": "ArcSqlServerInstanceId"
+          }
+        ],
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "CataloguedTab"
+      },
+      "name": "query - Arc SQL Server details"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Select one or more instances to view the databases"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "CataloguedTab"
+      },
+      "name": "text - Arc Sql Server databases"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances/databases'\r\n| extend instanceName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n| extend instanceId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", instanceName)\r\n| where instanceId in ({ArcSqlServerInstanceId})\r\n| project instanceId, databaseId = id, Region = location, state = tostring(properties.state), creationDate = tostring(properties.databaseCreationDate), compatibilityLevel = tostring(properties.compatibilityLevel), lastFullBackup = tostring(properties.backupInformation.lastFullBackup), lastLogBackup = tostring(properties.backupInformation.lastLogBackup), sizeMB = tostring(properties.sizeMB), spaceAvailableMB = tostring(properties.spaceAvailableMB), collationName = tostring(properties.collationName), recoveryMode = tostring(properties.recoveryMode), isReadOnly = tostring(properties.isReadOnly), isMemoryOptimizationEnabled = tostring(properties.databaseOptions.isMemoryOptimizationEnabled), isRemoteDataArchiveEnabled = tostring(properties.databaseOptions.isRemoteDataArchiveEnabled), isAutoUpdateStatsOn = tostring(properties.databaseOptions.isAutoUpdateStatsOn), isAutoCreateStatsOn = tostring(properties.databaseOptions.isAutoCreateStatsOn), isTrustworthyOn = tostring(properties.databaseOptions.isTrustworthyOn), isAutoShrinkOn = tostring(properties.databaseOptions.isAutoShrinkOn), isAutoCloseOn = tostring(properties.databaseOptions.isAutoCloseOn), isEncrypted = tostring(properties.databaseOptions.isEncrypted), tags, subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Database Info",
+        "noDataMessage": "No Arc-Enabled SQL Server Databases to display!",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            },
+            {
+              "columnMatch": "lastFullBackup",
+              "formatter": 6
+            },
+            {
+              "columnMatch": "lastLogBackup",
+              "formatter": 6
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "ArcSqlServerInstanceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "selectedTab",
+          "comparison": "isEqualTo",
+          "value": "CataloguedTab"
+        }
+      ],
+      "name": "query - Arc SQL Server database details"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
