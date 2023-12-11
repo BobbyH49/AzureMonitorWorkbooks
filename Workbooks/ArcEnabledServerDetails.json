@@ -630,7 +630,7 @@
               "color": "yellow"
             },
             {
-              "seriesName": "Extension Failed",
+              "seriesName": "No upload status",
               "color": "gray"
             }
           ]
@@ -708,16 +708,16 @@
         "chartSettings": {
           "seriesLabelSettings": [
             {
-              "seriesName": "Extension Failed",
-              "color": "gray"
-            },
-            {
               "seriesName": "Paid",
               "color": "green"
             },
             {
               "seriesName": "LicenseOnly",
               "color": "blueDark"
+            },
+            {
+              "seriesName": "No license type",
+              "color": "gray"
             }
           ]
         }
