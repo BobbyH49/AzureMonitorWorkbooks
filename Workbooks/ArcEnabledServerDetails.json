@@ -989,11 +989,11 @@
           "seriesLabelSettings": [
             {
               "seriesName": "Yes",
-              "color": "green"
+              "color": "redBright"
             },
             {
               "seriesName": "No",
-              "color": "gray"
+              "color": "green"
             }
           ]
         },
