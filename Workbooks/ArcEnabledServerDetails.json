@@ -656,7 +656,7 @@
         "version": "KqlItem/1.0",
         "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineid = tolower(tostring(id)), location1 = location, resourceGroup1 = resourceGroup, subscriptionId1 = subscriptionId\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend machineid = substring(tolower(tostring(id)), 0, indexof(tostring(id), \"/extensions\"))\r\n) on machineid\r\n| extend provisioningState = case(provisioningState == \"\", \"Not Installed\", provisioningState)\r\n| where provisioningState in ({provisioningState})\r\n| extend uploadStatus = case(uploadStatus == \"\", \"Extension Failed\", uploadStatus)\r\n| where uploadStatus in ({uploadStatus})\r\n| extend licenseType = case(licenseType == \"\", \"Extension Failed\", licenseType)\r\n| where licenseType in ({licenseType})\r\n| join kind = leftouter   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineid = tolower(tostring(properties.containerResourceId))\r\n    | summarize instanceCount = count() by machineid\r\n) on machineid\r\n| extend instanceCount = todouble(case(isnull(instanceCount), 0, instanceCount))\r\n| extend instancesCatalogued = case(instanceCount == 0, \"No\", \"Yes\")\r\n| where instancesCatalogued in ({instancesCatalogued})\r\n| summarize machineCount = count() by instancesCatalogued",
         "size": 3,
-        "title": "SQL Server Instances Catalogued",
+        "title": "Servers with SQL Instances Catalogued",
         "noDataMessage": "No SQL Server machines found!",
         "queryType": 1,
         "resourceType": "microsoft.resourcegraph/resources",
@@ -689,7 +689,7 @@
         "value": "ExtensionStatusTab"
       },
       "customWidth": "50",
-      "name": "query - SQL Server Instances Catalogued"
+      "name": "query - Servers with SQL Instances Catalogued"
     },
     {
       "type": 3,
@@ -776,7 +776,248 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| project machineId = tolower(id)\r\n| join kind=inner (\r\n    resources\r\n    | where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances'\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n    | extend instanceId = id\r\n) on machineId\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances/databases'\r\n    | extend instanceName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n    | extend instanceId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", instanceName)\r\n    | summarize databaseCount = count() by instanceId\r\n) on instanceId\r\n| project\r\n    machineId\r\n    , instanceId\r\n    , instanceName = tostring(properties.instanceName)\r\n    , Region = location, status = tostring(properties.status)\r\n    , vCore = tostring(properties.vCore)\r\n    , version = tostring(properties.version)\r\n    , edition = tostring(properties.edition)\r\n    , patchLevel = tostring(properties.patchLevel)\r\n    , licenseType = tostring(properties.licenseType)\r\n    , databaseCount\r\n    , collation = tostring(properties.collation)\r\n    , tcpStaticPorts = tostring(properties.tcpStaticPorts)\r\n    , tcpDynamicPorts = tostring(properties.tcpDynamicPorts)\r\n    , azureDefenderStatus = tostring(properties.azureDefenderStatus)\r\n    , tags\r\n    , resourceGroup = case(resourceGroup == \"\", strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup), strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup))\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineId = tolower(tostring(id))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n) on machineId\r\n| summarize instanceCount = count()",
+        "size": 3,
+        "title": "SQL Server Instances Catalogued",
+        "noDataMessage": "No SQL Server instance found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "card",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Yes",
+              "color": "green"
+            },
+            {
+              "seriesName": "No",
+              "color": "gray"
+            }
+          ]
+        },
+        "textSettings": {
+          "style": "bignumber"
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "CataloguedTab"
+      },
+      "customWidth": "50",
+      "name": "query - SQL Server Instances Catalogued"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineId = tolower(tostring(id)), location1 = location, resourceGroup1 = resourceGroup, subscriptionId1 = subscriptionId\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n    | extend instanceId = id\r\n) on machineId\r\n| join kind = inner   (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances/databases\"\r\n    | extend instanceName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n    | extend instanceId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", instanceName)\r\n) on instanceId\r\n| summarize databaseCount = count()",
+        "size": 3,
+        "title": "SQL Server Databases Catalogued",
+        "noDataMessage": "No SQL Server databases found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "card",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Yes",
+              "color": "green"
+            },
+            {
+              "seriesName": "No",
+              "color": "gray"
+            }
+          ]
+        },
+        "textSettings": {
+          "style": "bignumber"
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "CataloguedTab"
+      },
+      "customWidth": "50",
+      "name": "query - SQL Server Databases Catalogued"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "83592bce-ad61-4465-a1f8-9d9c7aa1d927",
+            "version": "KqlParameterItem/1.0",
+            "name": "zeroDatabaseCount",
+            "label": "Zero Database Count",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "jsonData": "[\r\n    {\"value\": \"Yes\", \"label\": \"Yes\"},\r\n    {\"value\": \"No\", \"label\": \"No\"}\r\n]",
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "7bee49ee-0d3b-4202-941c-1f105af14aea",
+            "version": "KqlParameterItem/1.0",
+            "name": "editionLicenseType",
+            "label": "Edition by License Type",
+            "type": 2,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineId = tolower(tostring(id))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n    | extend edition = tostring(properties.edition)\r\n    | extend licenseType = tostring(properties.licenseType)\r\n\r\n) on machineId\r\n| extend editionLicenseType = strcat(edition, \"_\", licenseType)\r\n| distinct editionLicenseType",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          }
+        ],
+        "style": "pills",
+        "doNotRunWhenHidden": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "CataloguedTab"
+      },
+      "customWidth": "100",
+      "name": "parameters - SQL Instances"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineId = tolower(tostring(id))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n    | extend instanceId = id\r\n    | extend edition = tostring(properties.edition)\r\n    | extend licenseType = tostring(properties.licenseType)\r\n) on machineId\r\n| join kind = leftouter (\r\n    resources\r\n    | where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances/databases'\r\n    | extend instanceName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n    | extend instanceId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", instanceName)\r\n    | summarize databaseCount = count() by instanceId\r\n) on instanceId\r\n| extend zeroDatabaseCount = case(isnull(databaseCount), \"Yes\", \"No\")\r\n| extend editionLicenseType = strcat(edition, \"_\", licenseType)\r\n| where zeroDatabaseCount in ({zeroDatabaseCount})\r\n| where editionLicenseType in ({editionLicenseType})\r\n| summarize instanceCount = count() by zeroDatabaseCount",
+        "size": 3,
+        "title": "SQL Server Instances with 0 databases",
+        "noDataMessage": "No SQL Server instance found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "piechart",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Yes",
+              "color": "green"
+            },
+            {
+              "seriesName": "No",
+              "color": "gray"
+            }
+          ]
+        },
+        "textSettings": {
+          "style": "bignumber"
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "CataloguedTab"
+      },
+      "customWidth": "50",
+      "name": "query - SQL Instances with 0 databases"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineId = tolower(tostring(id))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n    | extend instanceId = id\r\n    | extend edition = tostring(properties.edition)\r\n    | extend licenseType = tostring(properties.licenseType)\r\n) on machineId\r\n| join kind = leftouter (\r\n    resources\r\n    | where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances/databases'\r\n    | extend instanceName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n    | extend instanceId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", instanceName)\r\n    | summarize databaseCount = count() by instanceId\r\n) on instanceId\r\n| extend zeroDatabaseCount = case(isnull(databaseCount), \"Yes\", \"No\")\r\n| extend editionLicenseType = strcat(edition, \"_\", licenseType)\r\n| where zeroDatabaseCount in ({zeroDatabaseCount})\r\n| where editionLicenseType in ({editionLicenseType})\r\n| summarize instanceCount = count() by editionLicenseType",
+        "size": 3,
+        "title": "SQL Server Editions by License Type",
+        "noDataMessage": "No SQL Server instance found!",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Machine}"
+        ],
+        "visualization": "piechart",
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "textSettings": {
+          "style": "bignumber"
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "CataloguedTab"
+      },
+      "customWidth": "50",
+      "name": "query - SQL Editions by License Type"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == \"microsoft.hybridcompute/machines\"\r\n| where id in ({Machine})\r\n| where tostring(properties.detectedProperties.mssqldiscovered) == \"true\"\r\n| project machineId = tolower(tostring(id))\r\n| join kind = inner (\r\n    resources\r\n    | where tolower(type) == \"microsoft.azurearcdata/sqlserverinstances\"\r\n    | extend machineId = tolower(tostring(properties.containerResourceId))\r\n    | extend instanceId = id\r\n    | extend edition = tostring(properties.edition)\r\n    | extend licenseType = tostring(properties.licenseType)\r\n) on machineId\r\n| join kind = leftouter (\r\n    resources\r\n    | where tolower(type) == 'microsoft.azurearcdata/sqlserverinstances/databases'\r\n    | extend instanceName = extract(\".+/SqlServerInstances/([^/]+)/.+\", 1, id)\r\n    | extend instanceId = strcat(substring(id, 0, indexof(id, \"/SqlServerInstances\", 0)), \"/SqlServerInstances/\", instanceName)\r\n    | summarize databaseCount = count() by instanceId\r\n) on instanceId\r\n| extend zeroDatabaseCount = case(isnull(databaseCount), \"Yes\", \"No\")\r\n| extend editionLicenseType = strcat(edition, \"_\", licenseType)\r\n| where zeroDatabaseCount in ({zeroDatabaseCount})\r\n| where editionLicenseType in ({editionLicenseType})\r\n| project\r\n    machineId\r\n    , instanceId\r\n    , instanceName = tostring(properties.instanceName)\r\n    , Region = location, status = tostring(properties.status)\r\n    , vCore = tostring(properties.vCore)\r\n    , version = tostring(properties.version)\r\n    , edition\r\n    , patchLevel = tostring(properties.patchLevel)\r\n    , licenseType\r\n    , databaseCount = case(isnull(databaseCount), 0, databaseCount)\r\n    , collation = tostring(properties.collation)\r\n    , tcpStaticPorts = tostring(properties.tcpStaticPorts)\r\n    , tcpDynamicPorts = tostring(properties.tcpDynamicPorts)\r\n    , azureDefenderStatus = tostring(properties.azureDefenderStatus)\r\n    , tags\r\n    , resourceGroup = case(resourceGroup == \"\", strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup), strcat('/subscriptions/', subscriptionId, '/resourceGroups/',resourceGroup))\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)",
         "size": 1,
         "title": "Arc SQL Server Info",
         "noDataMessage": "No Arc SQL-Enabled SQL Servers to display",
