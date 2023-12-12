@@ -101,7 +101,7 @@
             "id": "ea9a7b94-b54f-4f25-9d07-720c45aa2817",
             "version": "KqlParameterItem/1.0",
             "name": "machineName",
-            "label": "Arc-Enabled Machine Search",
+            "label": "Machine Search",
             "type": 1,
             "value": ""
           }
