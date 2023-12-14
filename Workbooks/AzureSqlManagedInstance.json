@@ -517,10 +517,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Duration"
     },
@@ -537,10 +543,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Cpu"
     },
@@ -557,10 +569,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Logical Reads"
     },
@@ -577,10 +595,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Physical Reads"
     },
@@ -597,10 +621,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Logical Writes"
     },
@@ -617,10 +647,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Query Max Used Memory MB"
     },
@@ -637,10 +673,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Log MB Used"
     },
@@ -657,10 +699,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "customWidth": "50",
       "name": "query - Sql Wait TIme Minutes"
     },
@@ -691,10 +739,16 @@
           "{LogAnalytics}"
         ]
       },
-      "conditionalVisibility": {
-        "parameterName": "LogAnalytics",
-        "comparison": "isNotEqualTo"
-      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
       "name": "query - Query Store Totals"
     },
     {
@@ -713,7 +767,8 @@
               "additionalResourceOptions": [],
               "showDefault": false
             },
-            "jsonData": "[\r\n    { \"value\":\"ExecutionCount\", \"label\": \"Number of executions\", \"selected\":true},\r\n    { \"value\":\"DurationMinutes\", \"label\": \"Duration\", \"selected\":false},\r\n    { \"value\":\"CpuMinutes\", \"label\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"LogicalReadsMB\", \"label\": \"Logical Reads\", \"selected\":false},\r\n    { \"value\":\"PhysicalReadsMB\", \"label\": \"Physical Reads\", \"selected\":false},\r\n    { \"value\":\"LogicalWritesMB\", \"label\": \"Logical Writes\", \"selected\":false},\r\n    { \"value\":\"QueryMaxUsedMemoryMB\", \"label\": \"Query Max Used Memory\", \"selected\":false},\r\n    { \"value\":\"LogMBUsed\", \"label\": \"Log Used\", \"selected\":false},\r\n    { \"value\":\"WaitTimeMinutes\", \"label\": \"Wait Time\", \"selected\":false}\r\n]"
+            "jsonData": "[\r\n    { \"value\":\"ExecutionCount\", \"label\": \"Number of executions\", \"selected\":true},\r\n    { \"value\":\"DurationMinutes\", \"label\": \"Duration\", \"selected\":false},\r\n    { \"value\":\"CpuMinutes\", \"label\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"LogicalReadsMB\", \"label\": \"Logical Reads\", \"selected\":false},\r\n    { \"value\":\"PhysicalReadsMB\", \"label\": \"Physical Reads\", \"selected\":false},\r\n    { \"value\":\"LogicalWritesMB\", \"label\": \"Logical Writes\", \"selected\":false},\r\n    { \"value\":\"QueryMaxUsedMemoryMB\", \"label\": \"Query Max Used Memory\", \"selected\":false},\r\n    { \"value\":\"LogMBUsed\", \"label\": \"Log Used\", \"selected\":false},\r\n    { \"value\":\"WaitTimeMinutes\", \"label\": \"Wait Time\", \"selected\":false}\r\n]",
+            "value": "CpuMinutes"
           }
         ],
         "style": "pills",
