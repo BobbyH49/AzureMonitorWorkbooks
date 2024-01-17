@@ -271,7 +271,8 @@
                 {
                   "durationMs": 7776000000
                 }
-              ]
+              ],
+              "allowCustom": true
             }
           },
           {
