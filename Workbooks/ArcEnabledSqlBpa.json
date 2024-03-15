@@ -337,7 +337,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let sqlCSV = (\"{SQLServer}\");\r\nprint sqlCSV\r\n| project sqlArray = parse_csv(sqlCSV)\r\n| mv-expand sqlId = sqlArray\r\n| project sqlId = replace_string(tostring(sqlId), \"'\", \"\")\r\n| where \"{machineId}\" != \"None\" \r\n| parse sqlId with * 'sqlserverinstances/' SQLServer\r\n| parse \"{machineId}\" with * 'machines/' Server\r\n| where SQLServer startswith Server\r\n| join kind = leftouter (\r\n    SqlAssessment_CL\r\n    | extend machineId = tolower(_ResourceId)\r\n    | where machineId == \"{machineId}\"\r\n    | extend asmt = parse_csv(RawData)\r\n    | where asmt[6] == \"1\"\r\n    | project SQLServer = replace_string(tolower(tostring(asmt[7])), \"\\\\\", \"_\"), upload_id = tostring(asmt[1]), format_datetime(TimeGenerated, 'yyyy-MM-dd HH:mm')\r\n) on SQLServer\r\n| summarize TimeGenerated = min(TimeGenerated) by sqlId, SQLServer, upload_id\r\n| summarize EarliestAssessment = min(TimeGenerated), LatestAssessment = max(TimeGenerated) by sqlId, SQLServer\r\n| project\r\n    sqlId, SQLServer, EarliestAssessment, LatestAssessment, MigrationAssessment = strcat(\"https://portal.azure.com/#view/Microsoft_Azure_HybridData_Platform/Assessment.ReactView/instanceName/\", SQLServer)\r\n",
+        "query": "let sqlCSV = (\"{SQLServer}\");\r\nprint sqlCSV\r\n| project sqlArray = parse_csv(sqlCSV)\r\n| mv-expand sqlId = sqlArray\r\n| project sqlId = replace_string(tostring(sqlId), \"'\", \"\")\r\n| where \"{machineId}\" != \"None\" \r\n| parse sqlId with * 'sqlserverinstances/' SQLServer\r\n| parse \"{machineId}\" with * 'machines/' Server\r\n| where SQLServer startswith Server\r\n| join kind = leftouter (\r\n    SqlAssessment_CL\r\n    | extend machineId = tolower(_ResourceId)\r\n    | where machineId == \"{machineId}\"\r\n    | extend asmt = parse_csv(RawData)\r\n    | where asmt[6] == \"1\"\r\n    | project SQLServer = replace_string(tolower(tostring(asmt[7])), \"\\\\\", \"_\"), upload_id = tostring(asmt[1]), format_datetime(TimeGenerated, 'yyyy-MM-dd HH:mm')\r\n) on SQLServer\r\n| summarize TimeGenerated = min(TimeGenerated) by sqlId, SQLServer, upload_id\r\n| summarize EarliestAssessment = min(TimeGenerated), LatestAssessment = max(TimeGenerated) by sqlId, SQLServer\r\n| project\r\n    sqlId, SQLServer, EarliestAssessment, LatestAssessment, MigrationAssessment = sqlId",
         "size": 0,
         "title": "ARC Enabled SQL Server Instances",
         "noDataMessage": "No SQL Server Instances found",
@@ -359,7 +359,8 @@
               "columnMatch": "MigrationAssessment",
               "formatter": 7,
               "formatOptions": {
-                "linkTarget": "Url",
+                "linkTarget": "Resource",
+                "subTarget": "migrationAssessment",
                 "linkLabel": "Migration Assessment (preview)"
               }
             }
