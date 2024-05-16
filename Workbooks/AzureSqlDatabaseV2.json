@@ -1026,6 +1026,10 @@
         "gridSettings": {
           "formatters": [
             {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            },
+            {
               "columnMatch": "earliestRestoreDate",
               "formatter": 6
             }
