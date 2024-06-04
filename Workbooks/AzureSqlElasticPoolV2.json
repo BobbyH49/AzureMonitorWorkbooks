@@ -63,7 +63,7 @@
               "queryType": 1,
               "resourceType": "microsoft.resourcegraph/resources",
               "value": [
-                "default-sql-westeurope"
+                "value::all"
               ]
             },
             {
@@ -211,7 +211,7 @@
                 "selectAllValue": "",
                 "defaultItemsText": "Default Metrics"
               },
-              "jsonData": "[\r\n    { \"value\":\"EPeDtuLimit\", \"label\": \"eDTU limit\", \"group\": \"eDTU\", \"selected\":false},\r\n    { \"value\":\"EPeDtuPercentage\", \"label\": \"eDTU percentage\", \"group\": \"eDTU\", \"selected\":false},\r\n    { \"value\":\"EPeDtuUsed\", \"label\": \"eDTU used\", \"group\": \"eDTU\", \"selected\":false},\r\n    { \"value\":\"EPCpuLimit\", \"label\": \"CPU limit\", \"group\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"EPCpuPercentage\", \"label\": \"CPU percentage\", \"group\": \"CPU\", \"selected\":true},\r\n    { \"value\":\"EPCpuUsed\", \"label\": \"CPU used\", \"group\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"EPSqlInstanceCpuPercent\", \"label\": \"SQL instance CPU percent\", \"group\": \"CPU\", \"selected\":true},\r\n    { \"value\":\"EPWorkersPercentage\", \"label\": \"Workers percentage\", \"group\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"EPSqlInstanceMemoryPercent\", \"label\": \"SQL instance memory percent\", \"group\": \"Memory\", \"selected\":true},\r\n    { \"value\":\"EPDataIoPercentage\", \"label\": \"Data IO percentage\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPDataSpaceAllocated\", \"label\": \"Data space allocated\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPDataSpaceUsedValue\", \"label\": \"Data space used\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPDataSpaceUsedPercent\", \"label\": \"Data space used percent\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPLogIoPercentage\", \"label\": \"Log IO percentage\", \"group\": \"Log IO\", \"selected\":true},\r\n    { \"value\":\"EPSessionsCount\", \"label\": \"Sessions count\", \"group\": \"Sessions\", \"selected\":true},\r\n    { \"value\":\"EPSessionsPercentage\", \"label\": \"Sessions percentage\", \"group\": \"Sessions\", \"selected\":true},\r\n    { \"value\":\"EPTempdbDataFileSizeKilobytes\", \"label\": \"Tempdb Data File Size Kilobytes\", \"group\": \"Tempdb\", \"selected\":true},\r\n    { \"value\":\"EPTempdbLogFileSizeKilobytes\", \"label\": \"Tempdb Log File Size Kilobytes\", \"group\": \"Tempdb\", \"selected\":true},\r\n    { \"value\":\"EPTempdbPercentLogUsed\", \"label\": \"Tempdb Percent Log Used\", \"group\": \"Tempdb\", \"selected\":false}\r\n]",
+              "jsonData": "[\r\n    { \"value\":\"EPeDtuLimit\", \"label\": \"eDTU limit\", \"group\": \"eDTU\", \"selected\":false},\r\n    { \"value\":\"EPeDtuPercentage\", \"label\": \"eDTU percentage\", \"group\": \"eDTU\", \"selected\":false},\r\n    { \"value\":\"EPeDtuUsed\", \"label\": \"eDTU used\", \"group\": \"eDTU\", \"selected\":false},\r\n    { \"value\":\"EPCpuLimit\", \"label\": \"CPU limit\", \"group\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"EPCpuPercentage\", \"label\": \"CPU percentage\", \"group\": \"CPU\", \"selected\":true},\r\n    { \"value\":\"EPCpuUsed\", \"label\": \"CPU used\", \"group\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"EPSqlInstanceCpuPercent\", \"label\": \"SQL instance CPU percent\", \"group\": \"CPU\", \"selected\":true},\r\n    { \"value\":\"EPWorkersPercentage\", \"label\": \"Workers percentage\", \"group\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"EPSqlInstanceMemoryPercent\", \"label\": \"SQL instance memory percent\", \"group\": \"Memory\", \"selected\":true},\r\n    { \"value\":\"EPDataIoPercentage\", \"label\": \"Data IO percentage\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPDataMaxSize\", \"label\": \"Data max size\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPDataSpaceAllocated\", \"label\": \"Data space allocated\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPDataSpaceUsedValue\", \"label\": \"Data space used\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPDataSpaceUsedPercent\", \"label\": \"Data space used percent\", \"group\": \"Data IO\", \"selected\":true},\r\n    { \"value\":\"EPLogIoPercentage\", \"label\": \"Log IO percentage\", \"group\": \"Log IO\", \"selected\":true},\r\n    { \"value\":\"EPSessionsCount\", \"label\": \"Sessions count\", \"group\": \"Sessions\", \"selected\":true},\r\n    { \"value\":\"EPSessionsPercentage\", \"label\": \"Sessions percentage\", \"group\": \"Sessions\", \"selected\":true},\r\n    { \"value\":\"EPTempdbDataFileSizeKilobytes\", \"label\": \"Tempdb Data File Size Kilobytes\", \"group\": \"Tempdb\", \"selected\":true},\r\n    { \"value\":\"EPTempdbLogFileSizeKilobytes\", \"label\": \"Tempdb Log File Size Kilobytes\", \"group\": \"Tempdb\", \"selected\":true},\r\n    { \"value\":\"EPTempdbPercentLogUsed\", \"label\": \"Tempdb Percent Log Used\", \"group\": \"Tempdb\", \"selected\":false}\r\n]",
               "timeContext": {
                 "durationMs": 86400000
               }
@@ -521,6 +521,36 @@
                 "durationMs": 86400000
               },
               "label": "DataIoPercentage"
+            },
+            {
+              "id": "f0c7141b-3c2d-4e79-942f-7d9a79d36473",
+              "version": "KqlParameterItem/1.0",
+              "name": "EPDataMaxSize",
+              "type": 1,
+              "isRequired": true,
+              "isHiddenWhenLocked": true,
+              "criteriaData": [
+                {
+                  "criteriaContext": {
+                    "leftOperand": "EPMetric",
+                    "operator": "contains",
+                    "rightValType": "static",
+                    "rightVal": "EPDataMaxSize",
+                    "resultValType": "static",
+                    "resultVal": "True"
+                  }
+                },
+                {
+                  "criteriaContext": {
+                    "operator": "Default",
+                    "resultValType": "static",
+                    "resultVal": "False"
+                  }
+                }
+              ],
+              "timeContext": {
+                "durationMs": 86400000
+              }
             },
             {
               "id": "e2666787-c407-4062-b7ff-fa24f5cdfbc2",
@@ -1226,7 +1256,7 @@
           ],
           "timeContextFromParameter": "TimeRange",
           "timeContext": {
-            "durationMs": 0
+            "durationMs": 86400000
           },
           "metrics": [
             {
@@ -1308,6 +1338,55 @@
         ],
         "customWidth": "50",
         "name": "metrics - PoolAvgDataIoPercentage"
+      },
+      {
+        "type": 10,
+        "content": {
+          "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+          "version": "MetricsItem/2.0",
+          "size": 0,
+          "chartType": 2,
+          "resourceType": "microsoft.sql/servers/elasticpools",
+          "metricScope": 0,
+          "resourceParameter": "SqlElasticPool",
+          "resourceIds": [
+            "{SqlElasticPool}"
+          ],
+          "timeContextFromParameter": "TimeRange",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "metrics": [
+            {
+              "namespace": "microsoft.sql/servers/elasticpools",
+              "metric": "microsoft.sql/servers/elasticpools-Basic-storage_limit",
+              "aggregation": 3,
+              "columnName": "DataMaxSize"
+            }
+          ],
+          "title": "Data max size",
+          "gridSettings": {
+            "rowLimit": 10000
+          }
+        },
+        "conditionalVisibilities": [
+          {
+            "parameterName": "SqlElasticPool",
+            "comparison": "isNotEqualTo"
+          },
+          {
+            "parameterName": "mainSelectedTab",
+            "comparison": "isEqualTo",
+            "value": "PoolMetricsTab"
+          },
+          {
+            "parameterName": "EPDataMaxSize",
+            "comparison": "isEqualTo",
+            "value": "True"
+          }
+        ],
+        "customWidth": "50",
+        "name": "metrics - PoolMaxDataMaxsize"
       },
       {
         "type": 10,
@@ -1840,9 +1919,14 @@
               "queryType": 1,
               "resourceType": "microsoft.resourcegraph/resources",
               "value": [
-                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1019",
-                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1022",
-                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1067"
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1020",
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1021",
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1036",
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1073",
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1075",
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1076",
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-1089",
+                "/subscriptions/8602e760-9e43-4750-a93a-f37f956abd27/resourceGroups/Default-SQL-WestEurope/providers/Microsoft.Sql/servers/s9jily4b5g/databases/MintSoft-OrderManagement-Customer-109"
               ]
             }
           ],
@@ -4056,7 +4140,7 @@
               },
               "queryType": 1,
               "resourceType": "microsoft.resourcegraph/resources",
-              "value": "/subscriptions/8a3a1520-2fd6-4cc4-9fca-53d30bd7dc5d/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-8a3a1520-2fd6-4cc4-9fca-53d30bd7dc5d-WEU"
+              "value": null
             }
           ],
           "style": "pills",
