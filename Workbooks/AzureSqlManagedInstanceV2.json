@@ -808,7 +808,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/managedinstances'\r\n| where resourceGroup in ({ResourceGroup})\r\n| where id in ({SqlManagedInstance})\r\n| project \r\n    ResourceId = id\r\n    , Region = location\r\n    , tier = tostring(sku.tier)\r\n    , family = tostring(sku.family)\r\n    , vcores = toint(sku.capacity)\r\n    , state = tostring(properties.state)\r\n    , backupStorageType = tostring(properties.storageAccountType)\r\n    , maintenanceConfiguration = tostring(properties.maintenanceConfigurationId)\r\n    , zoneRedundant = tostring(properties.zoneRedundant)\r\n    , collation = tostring(properties.collation)\r\n    , licenseType = tostring(properties.licenseType)\r\n    , storageSizeGB = toint(properties.storageSizeInGB)\r\n    , minimalTlsVersion = tostring(properties.minimalTlsVersion)\r\n    , proxyOverride = tostring(properties.proxyOverride)\r\n    , subnet = tostring(properties.subnetId)\r\n    , publicDataEndpointEnabled = tostring(properties.publicDataEndpointEnabled)\r\n    , timezone = tostring(properties.timezoneId)\r\n    , identityType = tostring(identity.type)\r\n    , resourceGroup = strcat('/subscriptions/', subscriptionId, '/resourceGroups/', resourceGroup)\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)\r\n",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/managedinstances'\r\n| where resourceGroup in ({ResourceGroup})\r\n| where id in ({SqlManagedInstance})\r\n| project \r\n    ResourceId = id\r\n    , Region = location\r\n    , tier = tostring(sku.tier)\r\n    , family = tostring(sku.family)\r\n    , vcores = toint(sku.capacity)\r\n    , instancePool = tostring(properties.instancePoolId)\r\n    , state = tostring(properties.state)\r\n    , backupStorageType = tostring(properties.storageAccountType)\r\n    , maintenanceConfiguration = tostring(properties.maintenanceConfigurationId)\r\n    , zoneRedundant = tostring(properties.zoneRedundant)\r\n    , collation = tostring(properties.collation)\r\n    , licenseType = tostring(properties.licenseType)\r\n    , storageSizeGB = toint(properties.storageSizeInGB)\r\n    , minimalTlsVersion = tostring(properties.minimalTlsVersion)\r\n    , proxyOverride = tostring(properties.proxyOverride)\r\n    , subnet = tostring(properties.subnetId)\r\n    , publicDataEndpointEnabled = tostring(properties.publicDataEndpointEnabled)\r\n    , timezone = tostring(properties.timezoneId)\r\n    , identityType = tostring(identity.type)\r\n    , resourceGroup = strcat('/subscriptions/', subscriptionId, '/resourceGroups/', resourceGroup)\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)\r\n",
         "size": 1,
         "title": "Managed Instance Info",
         "exportFieldName": "ResourceId",
@@ -1040,7 +1040,7 @@
             },
             "queryType": 1,
             "resourceType": "microsoft.resourcegraph/resources",
-            "value": "/subscriptions/bb5489d2-9c91-4069-87fc-4fb7c1b14477/resourceGroups/SqlMiRG/providers/Microsoft.OperationalInsights/workspaces/sqlmi"
+            "value": null
           }
         ],
         "style": "pills",
