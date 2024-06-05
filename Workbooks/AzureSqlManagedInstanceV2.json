@@ -1,0 +1,1972 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Azure SQL Managed Instance Performance Monitor"
+      },
+      "name": "text - Header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all"
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "ResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.sql/managedinstances\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlManagedInstance",
+            "label": "SQL Managed Instance",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == \"microsoft.sql/managedinstances\"\r\n| where resourceGroup in ({ResourceGroup})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "2d6f33ef-d1ec-480e-a6d8-3d198f572eaf",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "label": "Time Range",
+            "type": 4,
+            "isRequired": true,
+            "value": {
+              "durationMs": 86400000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                },
+                {
+                  "durationMs": 5184000000
+                },
+                {
+                  "durationMs": 7776000000
+                }
+              ],
+              "allowCustom": true
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - Sql Managed Instance"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "085bc00b-7668-471b-b3be-ea2a43364f5d",
+            "cellValue": "mainSelectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Metrics",
+            "subTarget": "MiMetricsTab",
+            "style": "link"
+          },
+          {
+            "id": "62b262be-47f5-49b9-bc0c-8159d0e2fcb0",
+            "cellValue": "mainSelectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Databases & Query Store",
+            "subTarget": "MiDatabasesTab",
+            "style": "link"
+          }
+        ]
+      },
+      "name": "PageTab"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "cd40f79f-4159-47d3-a83d-c7fe6ebeb433",
+            "version": "KqlParameterItem/1.0",
+            "name": "Metric",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "selectAllValue": "",
+              "showDefault": false
+            },
+            "jsonData": "[\r\n    { \"value\":\"AvgCpuPercentage\", \"label\": \"Average CPU percentage\", \"group\": \"CPU\", \"selected\":true},\r\n    { \"value\":\"VirtualCoreCount\", \"label\": \"Virtual core count\", \"group\": \"CPU\", \"selected\":true},\r\n    { \"value\":\"IoBytesRead\", \"label\": \"IO bytes read\", \"group\": \"IO\", \"selected\":true},\r\n    { \"value\":\"IoBytesWritten\", \"label\": \"IO bytes written\", \"group\": \"IO\", \"selected\":true},\r\n    { \"value\":\"IoRequestsCount\", \"label\": \"IO requests count\", \"group\": \"IO\", \"selected\":true},\r\n    { \"value\":\"StorageSpaceReserved\", \"label\": \"Storage space reserved\", \"group\": \"Storage\", \"selected\":true},\r\n    { \"value\":\"StorageSpaceUsed\", \"label\": \"Storage space used\", \"group\": \"Storage\", \"selected\":true}\r\n]",
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "7f1e8c1d-48db-4f01-a6ff-80621665375d",
+            "version": "KqlParameterItem/1.0",
+            "name": "AvgCpuPercentage",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "Metric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "AvgCpuPercentage",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "737d2f7d-3828-4cd8-9d82-c7df3d30d0ae",
+            "version": "KqlParameterItem/1.0",
+            "name": "VirtualCoreCount",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "Metric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "VirtualCoreCount",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "fb1a4c5f-13d0-41ef-b2c0-fa5190584904",
+            "version": "KqlParameterItem/1.0",
+            "name": "IoBytesRead",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "Metric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "IoBytesRead",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "3bca890a-251b-4aeb-9d6f-542674e8e6ee",
+            "version": "KqlParameterItem/1.0",
+            "name": "IoBytesWritten",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "Metric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "IoBytesWritten",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "7ebcf3bc-7556-4f72-9a0d-3129ec6d02b2",
+            "version": "KqlParameterItem/1.0",
+            "name": "IoRequestsCount",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "Metric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "IoRequestsCount",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "41103f69-10e5-44b2-b186-0ad9a79865ca",
+            "version": "KqlParameterItem/1.0",
+            "name": "StorageSpaceReserved",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "Metric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "StorageSpaceReserved",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "54084d53-d745-4000-af18-861a7ed26e31",
+            "version": "KqlParameterItem/1.0",
+            "name": "StorageSpaceUsed",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "Metric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "StorageSpaceUsed",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        }
+      ],
+      "name": "parameters - MI Metrics"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceType": "microsoft.sql/managedinstances",
+        "metricScope": 0,
+        "resourceParameter": "SqlManagedInstance",
+        "resourceIds": [
+          "{SqlManagedInstance}"
+        ],
+        "timeContextFromParameter": "TimeRange",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "metrics": [
+          {
+            "namespace": "microsoft.sql/managedinstances",
+            "metric": "microsoft.sql/managedinstances--avg_cpu_percent",
+            "aggregation": 4,
+            "columnName": "CpuPct"
+          }
+        ],
+        "title": "Average CPU percentage",
+        "gridSettings": {
+          "rowLimit": 10000
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        },
+        {
+          "parameterName": "AvgCpuPercentage",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "metrics - AvgCpuPercentage"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceType": "microsoft.sql/managedinstances",
+        "metricScope": 0,
+        "resourceParameter": "SqlManagedInstance",
+        "resourceIds": [
+          "{SqlManagedInstance}"
+        ],
+        "timeContextFromParameter": "TimeRange",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "metrics": [
+          {
+            "namespace": "microsoft.sql/managedinstances",
+            "metric": "microsoft.sql/managedinstances--virtual_core_count",
+            "aggregation": 4,
+            "columnName": "CoreCount"
+          }
+        ],
+        "title": "Virtual core count",
+        "gridSettings": {
+          "rowLimit": 10000
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        },
+        {
+          "parameterName": "VirtualCoreCount",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "metrics - VirtualCoreCount"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceType": "microsoft.sql/managedinstances",
+        "metricScope": 0,
+        "resourceParameter": "SqlManagedInstance",
+        "resourceIds": [
+          "{SqlManagedInstance}"
+        ],
+        "timeContextFromParameter": "TimeRange",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "metrics": [
+          {
+            "namespace": "microsoft.sql/managedinstances",
+            "metric": "microsoft.sql/managedinstances--io_bytes_read",
+            "aggregation": 4,
+            "columnName": "IoBytesRead"
+          }
+        ],
+        "title": "IO bytes read",
+        "gridSettings": {
+          "rowLimit": 10000
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        },
+        {
+          "parameterName": "IoBytesRead",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "metrics - IoBytesRead"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceType": "microsoft.sql/managedinstances",
+        "metricScope": 0,
+        "resourceParameter": "SqlManagedInstance",
+        "resourceIds": [
+          "{SqlManagedInstance}"
+        ],
+        "timeContextFromParameter": "TimeRange",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "metrics": [
+          {
+            "namespace": "microsoft.sql/managedinstances",
+            "metric": "microsoft.sql/managedinstances--io_bytes_written",
+            "aggregation": 4,
+            "columnName": "IoBytesWritten"
+          }
+        ],
+        "title": "IO bytes written",
+        "gridSettings": {
+          "rowLimit": 10000
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        },
+        {
+          "parameterName": "IoBytesWritten",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "metrics - IoBytesWritten"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceType": "microsoft.sql/managedinstances",
+        "metricScope": 0,
+        "resourceParameter": "SqlManagedInstance",
+        "resourceIds": [
+          "{SqlManagedInstance}"
+        ],
+        "timeContextFromParameter": "TimeRange",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "metrics": [
+          {
+            "namespace": "microsoft.sql/managedinstances",
+            "metric": "microsoft.sql/managedinstances--io_requests",
+            "aggregation": 4,
+            "columnName": "IoRequestsCount"
+          }
+        ],
+        "title": "IO requests count",
+        "gridSettings": {
+          "rowLimit": 10000
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        },
+        {
+          "parameterName": "IoRequestsCount",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "metrics - IoRequestsCount"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceType": "microsoft.sql/managedinstances",
+        "metricScope": 0,
+        "resourceParameter": "SqlManagedInstance",
+        "resourceIds": [
+          "{SqlManagedInstance}"
+        ],
+        "timeContextFromParameter": "TimeRange",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "metrics": [
+          {
+            "namespace": "microsoft.sql/managedinstances",
+            "metric": "microsoft.sql/managedinstances--reserved_storage_mb",
+            "aggregation": 4,
+            "columnName": "SpaceReserved"
+          }
+        ],
+        "title": "Storage space reserved MB",
+        "gridSettings": {
+          "rowLimit": 10000
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        },
+        {
+          "parameterName": "StorageSpaceReserved",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "metrics - StorageSpaceReserved"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook4d373e23-a23c-4f5a-99ea-e02c3d361741",
+        "version": "MetricsItem/2.0",
+        "size": 0,
+        "chartType": 2,
+        "resourceType": "microsoft.sql/managedinstances",
+        "metricScope": 0,
+        "resourceParameter": "SqlManagedInstance",
+        "resourceIds": [
+          "{SqlManagedInstance}"
+        ],
+        "timeContextFromParameter": "TimeRange",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "metrics": [
+          {
+            "namespace": "microsoft.sql/managedinstances",
+            "metric": "microsoft.sql/managedinstances--storage_space_used_mb",
+            "aggregation": 4,
+            "columnName": "SpaceUsed"
+          }
+        ],
+        "title": "Storage space used MB",
+        "gridSettings": {
+          "rowLimit": 10000
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiMetricsTab"
+        },
+        {
+          "parameterName": "StorageSpaceUsed",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "metrics - StorageSpaceUsed"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click a managed instance to view the list of databases on the instance"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        }
+      ],
+      "name": "text - Managed Instances"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/managedinstances'\r\n| where resourceGroup in ({ResourceGroup})\r\n| where id in ({SqlManagedInstance})\r\n| project \r\n    ResourceId = id\r\n    , Region = location\r\n    , tier = tostring(sku.tier)\r\n    , family = tostring(sku.family)\r\n    , vcores = toint(sku.capacity)\r\n    , state = tostring(properties.state)\r\n    , backupStorageType = tostring(properties.storageAccountType)\r\n    , maintenanceConfiguration = tostring(properties.maintenanceConfigurationId)\r\n    , zoneRedundant = tostring(properties.zoneRedundant)\r\n    , collation = tostring(properties.collation)\r\n    , licenseType = tostring(properties.licenseType)\r\n    , storageSizeGB = toint(properties.storageSizeInGB)\r\n    , minimalTlsVersion = tostring(properties.minimalTlsVersion)\r\n    , proxyOverride = tostring(properties.proxyOverride)\r\n    , subnet = tostring(properties.subnetId)\r\n    , publicDataEndpointEnabled = tostring(properties.publicDataEndpointEnabled)\r\n    , timezone = tostring(properties.timezoneId)\r\n    , identityType = tostring(identity.type)\r\n    , resourceGroup = strcat('/subscriptions/', subscriptionId, '/resourceGroups/', resourceGroup)\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)\r\n",
+        "size": 1,
+        "title": "Managed Instance Info",
+        "exportFieldName": "ResourceId",
+        "exportParameterName": "ResourceId",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        }
+      ],
+      "name": "query - managed instance details"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "parameters": [
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "SqlDatabase",
+            "label": "SQL Database",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resources\r\n| where tolower(type) == 'microsoft.sql/managedinstances/databases'\r\n| where resourceGroup in ({ResourceGroup})\r\n| extend ManagedInstanceName = extract(\".+/managedInstances/([^/]+)/.+\", 1, id)\r\n| extend ManagedInstanceId = strcat(substring(id, 0, indexof(id, \"/managedInstances\", 0)), \"/managedInstances/\", ManagedInstanceName)\r\n| where ManagedInstanceId == \"{ResourceId}\"\r\n| project ResourceId = id",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "parameters - Sql Database"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where tolower(type) == 'microsoft.sql/managedinstances/databases'\r\n| where resourceGroup in ({ResourceGroup})\r\n| where id in ({SqlDatabase})\r\n| extend ManagedInstanceName = extract(\".+/managedInstances/([^/]+)/.+\", 1, id)\r\n| extend ManagedInstanceId = strcat(substring(id, 0, indexof(id, \"/managedInstances\", 0)), \"/managedInstances/\", ManagedInstanceName)\r\n| where ManagedInstanceId == \"{ResourceId}\"\r\n| project\r\n    ManagedInstanceId\r\n    , ResourceId = id\r\n    , Region = location\r\n    , status = tostring(properties.status)\r\n    , collation = tostring(properties.collation)\r\n    , creationDate = tostring(properties.creationDate)\r\n    , defaultSecondaryLocation = tostring(properties.defaultSecondaryLocation)\r\n    , isLedgerOn = tostring(properties.isLedgerOn)\r\n    , resourceGroup = strcat('/subscriptions/', subscriptionId, '/resourceGroups/', resourceGroup)\r\n    , subscriptionId = strcat('/subscriptions/', subscriptionId)",
+        "size": 1,
+        "title": "Database Info",
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "creationDate",
+              "formatter": 6
+            }
+          ]
+        }
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "query - database details"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### To review Query Store metrics you will need to point to the Log Analytics Workspace that is capturing the Query Store diagnostic settings"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "text - Log Analytics"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{SubscriptionLA}"
+        ],
+        "parameters": [
+          {
+            "id": "51aa3a9b-14e0-4c22-a60d-abdbf8813f00",
+            "version": "KqlParameterItem/1.0",
+            "name": "SubscriptionLA",
+            "label": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all"
+          },
+          {
+            "id": "6cb303fd-4812-4097-a468-a177d8782913",
+            "version": "KqlParameterItem/1.0",
+            "name": "ResourceGroupLA",
+            "label": "Resource Group",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "resourceContainers \r\n| where type == \"microsoft.resources/subscriptions/resourcegroups\"\r\n| join kind = inner (\r\n    resources\r\n    | where type == \"microsoft.operationalinsights/workspaces\"\r\n    | distinct resourceGroup, subscriptionId\r\n) on resourceGroup, subscriptionId\r\n| project resourceGroup\r\n| order by resourceGroup asc",
+            "crossComponentResources": [
+              "{SubscriptionLA}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "defaultValue": "value::all",
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "608c66cd-f3a8-45fe-98c0-69fb8a0b6d05",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogAnalytics",
+            "label": "Log Analytics Workspace",
+            "type": 5,
+            "query": "resources\r\n| where tolower(type) == \"microsoft.operationalinsights/workspaces\"\r\n| where resourceGroup in ({ResourceGroupLA})\r\n| project AffectedResource=id, resourceGroup",
+            "crossComponentResources": [
+              "{SubscriptionLA}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": "/subscriptions/bb5489d2-9c91-4069-87fc-4fb7c1b14477/resourceGroups/SqlMiRG/providers/Microsoft.OperationalInsights/workspaces/sqlmi"
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "parameters - Log Analytics"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "874aae30-b726-49cc-a202-ff38feda01b3",
+            "version": "KqlParameterItem/1.0",
+            "name": "QSMetric",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "selectAllValue": "",
+              "showDefault": false
+            },
+            "jsonData": "[\r\n    { \"value\":\"DurationMinutes\", \"label\": \"Duration\"},\r\n    { \"value\":\"CpuMinutes\", \"label\": \"CPU\"},\r\n    { \"value\":\"LogicalReadsMB\", \"label\": \"Logical Reads\"},\r\n    { \"value\":\"PhysicalReadsMB\", \"label\": \"Physical Reads\"},\r\n    { \"value\":\"LogicalWritesMB\", \"label\": \"Logical Writes\"},\r\n    { \"value\":\"QueryMemoryUsedMB\", \"label\": \"Query Memory Used\"},\r\n    { \"value\":\"LogMBUsed\", \"label\": \"Log Used\"},\r\n    { \"value\":\"WaitTimeMinutes\", \"label\": \"Wait Time\"}\r\n]",
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "7d5007f9-b816-451d-bca9-bf2dbd5427e6",
+            "version": "KqlParameterItem/1.0",
+            "name": "DurationMinutes",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "DurationMinutes",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "52d0e7e6-9041-40da-b9c9-2d51d7d54fc0",
+            "version": "KqlParameterItem/1.0",
+            "name": "CpuMinutes",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "CpuMinutes",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "884b9920-23f2-4281-8c5e-cd215a368bfc",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogicalReadsMB",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "LogicalReadsMB",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "b5a60af7-7aab-4014-acd3-1f60b6a23506",
+            "version": "KqlParameterItem/1.0",
+            "name": "PhysicalReadsMB",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "PhysicalReadsMB",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "6d370862-8d8d-43c3-9e03-e93007ff581e",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogicalWritesMB",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "LogicalWritesMB",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "4cc30bb5-8920-41a6-a246-cdcda68e7818",
+            "version": "KqlParameterItem/1.0",
+            "name": "QueryMemoryUsedMB",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "QueryMemoryUsedMB",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "28d54484-c541-40ed-8faa-ab0b1c3f93e4",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogMBUsed",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "LogMBUsed",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "7121a3ae-7da8-4de8-a8b5-a4020b998ca7",
+            "version": "KqlParameterItem/1.0",
+            "name": "WaitTimeMinutes",
+            "type": 1,
+            "isRequired": true,
+            "isHiddenWhenLocked": true,
+            "criteriaData": [
+              {
+                "criteriaContext": {
+                  "leftOperand": "QSMetric",
+                  "operator": "contains",
+                  "rightValType": "static",
+                  "rightVal": "WaitTimeMinutes",
+                  "resultValType": "static",
+                  "resultVal": "True"
+                }
+              },
+              {
+                "criteriaContext": {
+                  "operator": "Default",
+                  "resultValType": "static",
+                  "resultVal": "False"
+                }
+              }
+            ],
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "parameters - Query Store"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize DurationMinutes = round(sum(duration_d) / 60000000, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "Duration Minutes",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "DurationMinutes",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Duration"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize CpuMinutes = round(sum(cpu_time_d) / 60000000, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "CPU Minutes",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "CpuMinutes",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Cpu"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "Logical Reads MB",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogicalReadsMB",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Logical Reads"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "Physical Reads MB",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "PhysicalReadsMB",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Physical Reads"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "Logical Writes MB",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogicalWritesMB",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Logical Writes"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "Query Memory Used MB",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "QueryMemoryUsedMB",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Query Max Used Memory MB"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "Log MB Used",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogMBUsed",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Log MB Used"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreWaitStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, end_time\r\n| render timechart",
+        "size": 0,
+        "title": "Wait Time Minutes",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "WaitTimeMinutes",
+          "comparison": "isEqualTo",
+          "value": "True"
+        }
+      ],
+      "customWidth": "50",
+      "name": "query - Sql Wait TIme Minutes"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click a database to view the worst performing queries"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "text - Query Store Totals"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "4c2109be-6306-4c89-b7a2-e8d4ca4446f5",
+            "version": "KqlParameterItem/1.0",
+            "name": "OrderBy",
+            "label": "Order by",
+            "type": 2,
+            "isRequired": true,
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "jsonData": "[\r\n    { \"value\":\"ExecutionCount\", \"label\": \"Execution Count\", \"selected\":false},\r\n    { \"value\":\"DurationMinutes\", \"label\": \"Duration\", \"selected\":true},\r\n    { \"value\":\"CpuMinutes\", \"label\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"LogicalReadsMB\", \"label\": \"Logical Reads\", \"selected\":false},\r\n    { \"value\":\"PhysicalReadsMB\", \"label\": \"Physical Reads\", \"selected\":false},\r\n    { \"value\":\"PageServerReadsMB\", \"label\": \"Page Server Reads\", \"selected\":false},\r\n    { \"value\":\"LogicalWritesMB\", \"label\": \"Logical Writes\", \"selected\":false},\r\n    { \"value\":\"QueryMemoryUsedMB\", \"label\": \"Query Memory Used\", \"selected\":false},\r\n    { \"value\":\"LogMBUsed\", \"label\": \"Log Used\", \"selected\":false},\r\n    { \"value\":\"WaitTimeMinutes\", \"label\": \"Wait Time\", \"selected\":false}\r\n]"
+          }
+        ],
+        "style": "pills",
+        "doNotRunWhenHidden": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "parameters - Worst Performing Queries"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), QueryCount = count_distinct(query_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId in~({SqlDatabase})\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource\r\n) on Resource\r\n| project Resource, ExecutionCount, QueryCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc",
+        "size": 1,
+        "title": "Query store totals by database",
+        "exportFieldName": "Resource",
+        "exportParameterName": "Resource",
+        "showExportToExcel": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "query - Query Store Totals"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Click a query to view the worst performing query plans"
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "Resource",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "text - Worst Performing Queries"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), PlanCount = count_distinct(plan_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryId = query_id_d\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryId = query_id_d\r\n) on Resource, QueryId\r\n| project Resource, QueryId, ExecutionCount, PlanCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
+        "size": 0,
+        "title": "Worst performing queries",
+        "exportFieldName": "QueryId",
+        "exportParameterName": "QueryId",
+        "showExportToExcel": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "Resource",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "query - Worst Performing Queries"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where query_id_d == \"{QueryId}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryId = query_id_d, PlanId = plan_id_d\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where query_id_d == \"{QueryId}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryId = query_id_d, PlanId = plan_id_d\r\n) on Resource, QueryId, PlanId\r\n| project Resource, QueryId, PlanId, ExecutionCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
+        "size": 1,
+        "title": "Worst performing query plans",
+        "showExportToExcel": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalytics}"
+        ]
+      },
+      "conditionalVisibilities": [
+        {
+          "parameterName": "SqlManagedInstance",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "mainSelectedTab",
+          "comparison": "isEqualTo",
+          "value": "MiDatabasesTab"
+        },
+        {
+          "parameterName": "ResourceId",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SqlDatabase",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "LogAnalytics",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "Resource",
+          "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "QueryId",
+          "comparison": "isNotEqualTo"
+        }
+      ],
+      "name": "query - Worst Performing Plans"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
