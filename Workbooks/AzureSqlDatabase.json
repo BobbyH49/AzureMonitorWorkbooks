@@ -3336,6 +3336,11 @@
           "comparison": "isNotEqualTo"
         },
         {
+          "parameterName": "SummaryBy",
+          "comparison": "isEqualTo",
+          "value": "Hash"
+        },
+        {
           "parameterName": "QueryHash",
           "comparison": "isNotEqualTo"
         }
@@ -3373,6 +3378,11 @@
         {
           "parameterName": "Resource",
           "comparison": "isNotEqualTo"
+        },
+        {
+          "parameterName": "SummaryBy",
+          "comparison": "isEqualTo",
+          "value": "Id"
         },
         {
           "parameterName": "QueryId",
