@@ -10,23 +10,23 @@ Review the Workbooks folder for current collection of Azure Monitor Workbooks
 
     ![Go to Azure Monitor](media/AzurePortal.jpg)
 
-3. Go to **Workbooks** (shaded) from the left menu blade on the Azure Monitor Overview page
+3. Go to **Workbooks** from the left menu blade on the Azure Monitor Overview page
 
     ![Go to Workbooks](media/AzureMonitor.jpg)
 
-4. Click **New** (shaded) from the top menu to create a new workbook
+4. Click **New** from the top menu to create a new workbook
 
     ![New Workbook](media/NewWorkbook.jpg)
 
-5. Click **\<\/\>** (shaded) from the top menu to go to the Advanced Editor
+5. Click **\<\/\>** from the top menu to go to the Advanced Editor
 
     ![Advanced Editor](media/AdvancedEditor.jpg)
 
-6. Replace the json contents with the contents of your workbook file and then click **Apply** (shaded) to the top right of the editor panel
+6. Replace the json contents with the contents of your workbook file and then click **Apply** to the top right of the editor panel
 
     ![Add Workbook Json](media/AddWorkbookJson.jpg)
 
-7. Click **Done Editing** (shaded) from the top menu
+7. Click **Done Editing** from the top menu
 
     ![Done Editing](media/DoneEditing.jpg)
 
@@ -34,7 +34,7 @@ Review the Workbooks folder for current collection of Azure Monitor Workbooks
 
     ![Use Workbook](media/UseWorkbook.jpg)
 
-9. You can save the workbook to a subscription and resource group of your choosing by clicking the **Save** button (shaded) on the top menu
+9. You can save the workbook to a subscription and resource group of your choosing by clicking the **Save** button on the top menu
 
     ![Save Workbook](media/SaveWorkbook.jpg)
 
