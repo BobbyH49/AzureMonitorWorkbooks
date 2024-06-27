@@ -1065,13 +1065,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-dtu_limit",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DtuLimit"
           }
         ],
@@ -1114,13 +1115,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-dtu_consumption_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DtuPct"
           }
         ],
@@ -1163,13 +1165,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-dtu_used",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DtuUsed"
           }
         ],
@@ -1212,13 +1215,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-cpu_limit",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "CpuLimit"
           }
         ],
@@ -1261,13 +1265,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-cpu_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "CpuPct"
           }
         ],
@@ -1310,13 +1315,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-cpu_used",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "CpuUsed"
           }
         ],
@@ -1359,13 +1365,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-sql_instance_cpu_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "CpuPct"
           }
         ],
@@ -1408,13 +1415,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-workers_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "WorkersPct"
           }
         ],
@@ -1457,13 +1465,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-sql_instance_memory_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "MemoryPct"
           }
         ],
@@ -1506,13 +1515,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-xtp_storage_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "InMemoryPct"
           }
         ],
@@ -1555,13 +1565,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-physical_data_read_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataIOPct"
           }
         ],
@@ -1604,13 +1615,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-allocated_data_storage",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataAllocated"
           }
         ],
@@ -1653,13 +1665,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-storage",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataSpaceUsed"
           }
         ],
@@ -1702,13 +1715,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-storage_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataUsedPct"
           }
         ],
@@ -1751,13 +1765,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-log_write_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "LogIOPct"
           }
         ],
@@ -1800,7 +1815,8 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
@@ -1849,13 +1865,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-sessions_count",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "SessionsCount"
           }
         ],
@@ -1898,13 +1915,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-sessions_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "SessionsPct"
           }
         ],
@@ -1947,13 +1965,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-tempdb_data_size",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataSizeKB"
           }
         ],
@@ -1996,13 +2015,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-tempdb_log_size",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "LogSizeKB"
           }
         ],
@@ -2045,13 +2065,14 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-tempdb_log_used_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "LogUsedPct"
           }
         ],
@@ -2094,7 +2115,8 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
@@ -2143,7 +2165,8 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
@@ -2192,7 +2215,8 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
@@ -2241,7 +2265,8 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
@@ -2290,7 +2315,8 @@
         ],
         "timeContextFromParameter": "TimeRange",
         "timeContext": {
-          "durationMs": 86400000
+          "durationMs": 7200000,
+          "endTime": "2024-06-27T11:00:00.000Z"
         },
         "metrics": [
           {
@@ -2420,7 +2446,7 @@
             },
             "queryType": 1,
             "resourceType": "microsoft.resourcegraph/resources",
-            "value": null
+            "value": "/subscriptions/940ad61a-ae2e-4a24-9b74-31467b6d5893/resourceGroups/Paycircle/providers/Microsoft.OperationalInsights/workspaces/PaycircleAnalytics"
           }
         ],
         "style": "pills",
@@ -2980,7 +3006,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3) by Resource, end_time\r\n| render timechart",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = strcat(extract(\".+/SERVERS/([^/]+)/.+\", 1, ResourceId), \"/\", extract(\".+/DATABASES/(.+)\", 1, ResourceId)).tolower()\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize QueryMemoryUsedMB = round(sum(query_max_used_memory_d) / 128, 3) by Resource, end_time\r\n| render timechart",
         "size": 0,
         "title": "Query Memory Used MB",
         "queryType": 0,
@@ -3125,7 +3151,6 @@
             "label": "Summary by"
           },
           {
-            "id": "4c2109be-6306-4c89-b7a2-e8d4ca4446f5",
             "version": "KqlParameterItem/1.0",
             "name": "OrderBy",
             "label": "Order by",
@@ -3135,7 +3160,8 @@
               "additionalResourceOptions": [],
               "showDefault": false
             },
-            "jsonData": "[\r\n    { \"value\":\"ExecutionCount\", \"label\": \"Execution Count\", \"selected\":false},\r\n    { \"value\":\"DurationMinutes\", \"label\": \"Duration\", \"selected\":true},\r\n    { \"value\":\"CpuMinutes\", \"label\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"LogicalReadsMB\", \"label\": \"Logical Reads\", \"selected\":false},\r\n    { \"value\":\"PhysicalReadsMB\", \"label\": \"Physical Reads\", \"selected\":false},\r\n    { \"value\":\"PageServerReadsMB\", \"label\": \"Page Server Reads\", \"selected\":false},\r\n    { \"value\":\"LogicalWritesMB\", \"label\": \"Logical Writes\", \"selected\":false},\r\n    { \"value\":\"QueryMemoryUsedMB\", \"label\": \"Query Memory Used\", \"selected\":false},\r\n    { \"value\":\"LogMBUsed\", \"label\": \"Log Used\", \"selected\":false},\r\n    { \"value\":\"WaitTimeMinutes\", \"label\": \"Wait Time\", \"selected\":false}\r\n]"
+            "jsonData": "[\r\n    { \"value\":\"ExecutionCount\", \"label\": \"Execution Count\", \"selected\":false},\r\n    { \"value\":\"DurationMinutes\", \"label\": \"Duration\", \"selected\":true},\r\n    { \"value\":\"CpuMinutes\", \"label\": \"CPU\", \"selected\":false},\r\n    { \"value\":\"LogicalReadsMB\", \"label\": \"Logical Reads\", \"selected\":false},\r\n    { \"value\":\"PhysicalReadsMB\", \"label\": \"Physical Reads\", \"selected\":false},\r\n    { \"value\":\"PageServerReadsMB\", \"label\": \"Page Server Reads\", \"selected\":false},\r\n    { \"value\":\"LogicalWritesMB\", \"label\": \"Logical Writes\", \"selected\":false},\r\n    { \"value\":\"QueryMemoryUsedMB\", \"label\": \"Query Memory Used\", \"selected\":false},\r\n    { \"value\":\"LogMBUsed\", \"label\": \"Log Used\", \"selected\":false},\r\n    { \"value\":\"WaitTimeMinutes\", \"label\": \"Wait Time\", \"selected\":false}\r\n]",
+            "id": "e00055bb-9222-4fbb-8e0b-afb1ef4ea3b4"
           }
         ],
         "style": "pills",
@@ -3164,7 +3190,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), QueryCount = count_distinct(query_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId in~({SqlDatabase})\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource\r\n) on Resource\r\n| project Resource, ExecutionCount, QueryCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId in~({SqlDatabase})\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), QueryCount = count_distinct(query_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId in~({SqlDatabase})\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource\r\n) on Resource\r\n| project Resource, ExecutionCount, QueryCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc",
         "size": 1,
         "title": "Query store totals by database",
         "exportFieldName": "Resource",
@@ -3223,7 +3249,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), PlanCount = count_distinct(plan_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryHash = query_hash_s\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryHash = query_hash_s\r\n) on Resource, QueryHash\r\n| project Resource, QueryHash, ExecutionCount, PlanCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), PlanCount = count_distinct(plan_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryHash = query_hash_s\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryHash = query_hash_s\r\n) on Resource, QueryHash\r\n| project Resource, QueryHash, ExecutionCount, PlanCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
         "size": 0,
         "title": "Worst performing queries by QueryHash",
         "exportFieldName": "QueryHash",
@@ -3265,7 +3291,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), PlanCount = count_distinct(plan_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryId = query_id_d\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryId = query_id_d\r\n) on Resource, QueryId\r\n| project Resource, QueryId, ExecutionCount, PlanCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), PlanCount = count_distinct(plan_id_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryId = query_id_d\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryId = query_id_d\r\n) on Resource, QueryId\r\n| project Resource, QueryId, ExecutionCount, PlanCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
         "size": 0,
         "title": "Worst performing queries by QueryId",
         "exportFieldName": "QueryId",
@@ -3307,7 +3333,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where query_hash_s == \"{QueryHash}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryHash = query_hash_s, PlanHash = query_plan_hash_s\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where query_hash_s == \"{QueryHash}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryHash = query_hash_s, PlanHash = query_plan_hash_s\r\n) on Resource, QueryHash, PlanHash\r\n| project Resource, QueryHash, PlanHash, ExecutionCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where query_hash_s == \"{QueryHash}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryHash = query_hash_s, PlanHash = query_plan_hash_s\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where query_hash_s == \"{QueryHash}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryHash = query_hash_s, PlanHash = query_plan_hash_s\r\n) on Resource, QueryHash, PlanHash\r\n| project Resource, QueryHash, PlanHash, ExecutionCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
         "size": 1,
         "title": "Worst performing query plans by PlanHash",
         "showExportToExcel": true,
@@ -3351,7 +3377,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where query_id_d == \"{QueryId}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d / count_executions_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryId = query_id_d, PlanId = plan_id_d\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where query_id_d == \"{QueryId}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryId = query_id_d, PlanId = plan_id_d\r\n) on Resource, QueryId, PlanId\r\n| project Resource, QueryId, PlanId, ExecutionCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
+        "query": "AzureDiagnostics\r\n| where Category  == \"QueryStoreRuntimeStatistics\"\r\n| where _ResourceId == \"{Resource}\"\r\n| where query_id_d == \"{QueryId}\"\r\n| where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n| extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n| extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n| extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n| extend Resource = _ResourceId\r\n| where start_time {TimeRange}\r\n| where end_time {TimeRange}\r\n| summarize ExecutionCount = sum(count_executions_d), AvgRowcount = round(avg(rowcount_d)), DurationMinutes = round(sum(duration_d) / 60000000, 3), CpuMinutes = round(sum(cpu_time_d) / 60000000, 3), AvgDop = round(avg(dop_d / count_executions_d)), LogicalReadsMB = round(sum(logical_io_reads_d) / 128, 3), PhysicalReadsMB = round(sum(physical_io_reads_d) / 128, 3), PageServerReadsMB = round(sum(page_server_reads_d) / 128, 3), LogicalWritesMB = round(sum(logical_io_writes_d) / 128, 3), QueryMemoryUsedMB = round(sum(query_max_used_memory_d) / 128, 3), LogMBUsed = round(sum(log_bytes_used_d) / 1024 / 1024, 3) by Resource, QueryId = query_id_d, PlanId = plan_id_d\r\n| join kind = leftouter (\r\n    AzureDiagnostics\r\n    | where Category  == \"QueryStoreWaitStatistics\"\r\n    | where _ResourceId == \"{Resource}\"\r\n    | where query_id_d == \"{QueryId}\"\r\n    | where TimeGenerated {TimeRange} or TimeGenerated -1h {TimeRange}\r\n    | extend interval_start_time_date = round(interval_start_time_d / 4294967296, 0), interval_end_time_date = round(interval_end_time_d / 4294967296, 0)\r\n    | extend interval_start_time_time = interval_start_time_d - 4294967296 * interval_start_time_date, interval_end_time_time = interval_end_time_d - 4294967296 * interval_end_time_date\r\n    | extend start_time = datetime(1900-1-1) + time(1d) * interval_start_time_date + time(1s) * (interval_start_time_time / 300.0), end_time = datetime(1900-1-1) + time(1d) * interval_end_time_date + time(1s) * (interval_end_time_time / 300.0)\r\n    | extend Resource = _ResourceId\r\n    | where start_time {TimeRange}\r\n    | where end_time {TimeRange}\r\n    | summarize WaitTimeMinutes = round(sum(total_query_wait_time_ms_d) / 60000, 3) by Resource, QueryId = query_id_d, PlanId = plan_id_d\r\n) on Resource, QueryId, PlanId\r\n| project Resource, QueryId, PlanId, ExecutionCount, AvgRowcount, DurationMinutes, CpuMinutes, AvgDop, LogicalReadsMB, PhysicalReadsMB, PageServerReadsMB, LogicalWritesMB, QueryMemoryUsedMB, LogMBUsed, WaitTimeMinutes = case(isnull(WaitTimeMinutes), 0.00, WaitTimeMinutes)\r\n| order by {OrderBy} desc\r\n| take 25",
         "size": 1,
         "title": "Worst performing query plans by PlanId",
         "showExportToExcel": true,
