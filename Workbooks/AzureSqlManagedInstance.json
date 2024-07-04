@@ -709,7 +709,7 @@
           {
             "namespace": "microsoft.sql/managedinstances",
             "metric": "microsoft.sql/managedinstances--reserved_storage_mb",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "SpaceReserved"
           }
         ],
@@ -758,7 +758,7 @@
           {
             "namespace": "microsoft.sql/managedinstances",
             "metric": "microsoft.sql/managedinstances--storage_space_used_mb",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "SpaceUsed"
           }
         ],

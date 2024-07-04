@@ -1409,7 +1409,7 @@
           {
             "namespace": "microsoft.sql/servers/elasticpools",
             "metric": "microsoft.sql/servers/elasticpools-Basic-allocated_data_storage",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataAllocated"
           }
         ],
@@ -1458,7 +1458,7 @@
           {
             "namespace": "microsoft.sql/servers/elasticpools",
             "metric": "microsoft.sql/servers/elasticpools-Basic-storage_used",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataSpaceUsed"
           }
         ],
@@ -1507,7 +1507,7 @@
           {
             "namespace": "microsoft.sql/servers/elasticpools",
             "metric": "microsoft.sql/servers/elasticpools-Basic-storage_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataUsedPct"
           }
         ],
@@ -1703,7 +1703,7 @@
           {
             "namespace": "microsoft.sql/servers/elasticpools",
             "metric": "microsoft.sql/servers/elasticpools-InstanceAndAppAdvanced-tempdb_data_size",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataSizeKB"
           }
         ],
@@ -1752,7 +1752,7 @@
           {
             "namespace": "microsoft.sql/servers/elasticpools",
             "metric": "microsoft.sql/servers/elasticpools-InstanceAndAppAdvanced-tempdb_log_size",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "LogSizeKB"
           }
         ],
@@ -1801,7 +1801,7 @@
           {
             "namespace": "microsoft.sql/servers/elasticpools",
             "metric": "microsoft.sql/servers/elasticpools-InstanceAndAppAdvanced-tempdb_log_used_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "LogUsedPct"
           }
         ],
@@ -3308,7 +3308,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-allocated_data_storage",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataAllocated"
           }
         ],
@@ -3370,7 +3370,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-storage",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataSpaceUsed"
           }
         ],
@@ -3432,7 +3432,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-storage_percent",
-            "aggregation": 4,
+            "aggregation": 3,
             "columnName": "DataUsedPct"
           }
         ],

@@ -1072,7 +1072,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-dtu_limit",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "DtuLimit"
           }
         ],
@@ -1122,7 +1122,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-dtu_consumption_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "DtuPct"
           }
         ],
@@ -1172,7 +1172,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-dtu_used",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "DtuUsed"
           }
         ],
@@ -1222,7 +1222,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-cpu_limit",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "CpuLimit"
           }
         ],
@@ -1272,7 +1272,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-cpu_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "CpuPct"
           }
         ],
@@ -1322,7 +1322,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-cpu_used",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "CpuUsed"
           }
         ],
@@ -1372,7 +1372,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-sql_instance_cpu_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "CpuPct"
           }
         ],
@@ -1422,7 +1422,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-workers_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "WorkersPct"
           }
         ],
@@ -1472,7 +1472,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-InstanceAndAppAdvanced-sql_instance_memory_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "MemoryPct"
           }
         ],
@@ -1522,7 +1522,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-xtp_storage_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "InMemoryPct"
           }
         ],
@@ -1572,7 +1572,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-physical_data_read_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "DataIOPct"
           }
         ],
@@ -1772,7 +1772,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-log_write_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "LogIOPct"
           }
         ],
@@ -1872,7 +1872,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-sessions_count",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "SessionsCount"
           }
         ],
@@ -1922,7 +1922,7 @@
           {
             "namespace": "microsoft.sql/servers/databases",
             "metric": "microsoft.sql/servers/databases-Basic-sessions_percent",
-            "aggregation": 3,
+            "aggregation": 4,
             "columnName": "SessionsPct"
           }
         ],
